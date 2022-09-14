@@ -1,30 +1,58 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Let's draw Music!</title>
+    <!-- <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" /> -->
+    <script src="https://cdn.jsdelivr.net/npm/vexflow/build/cjs/vexflow.js"></script>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <title>Let's draw Music!</title>
-  <!-- <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" /> -->
-  <script src="https://cdn.jsdelivr.net/npm/vexflow/build/cjs/vexflow.js"></script>
-</head>
+  <body>
+    <button id="draw">입력</button>
+    <div id="output"></div>
+    <!-- <script type="module" src="./vexflow.js"></script> -->
+    <script type="module">
+      const { Renderer, Stave, StaveNote, Formatter } = Vex.Flow;
 
-<body>
-  <button id="draw">입력</button>
-  <div id="output"></div>
-  <script type="module" src="./vexflow.js"></script>
-  <script type="module">
-    const draw = () => {
-      const syllable = "cdefgab";
-      const choice = Math.floor(Math.random() * 7);
+      // Create an SVG renderer and attach it to the DIV element with id="output".
+      const div = document.getElementById("output");
+      const renderer = new Renderer(div, Renderer.Backends.SVG);
 
-      notes.add(new StaveNote({ keys: [`${syllable[choice]}/4`], duration: "q" }));
+      // Configure the rendering context.
+      renderer.resize(750, 500);
+      const context = renderer.getContext();
+      context.setFont("Arial", 10);
 
-      Formatter.FormatAndDraw(context, stave, notes);
-      // location.reload();
-    }
+      // Create a stave of width 400 at position 10, 40.
+      const stave = new Stave(10, 40, 700);
 
-    document.getElementById("draw").addEventListener("click", draw);
-  </script>
-</body>
+      // Add a clef and time signature.
+      stave.addClef("treble").addTimeSignature("4/4");
 
+      // Connect it to the rendering context and draw!
+      stave.setContext(context).draw();
+
+      const notes = [
+        new StaveNote({ keys: ["c/4"], duration: "q" }),
+        new StaveNote({ keys: ["d/4"], duration: "q" }),
+        new StaveNote({ keys: ["b/4"], duration: "qr" }),
+        new StaveNote({ keys: ["c/4", "e/4", "g/4"], duration: "q" }),
+        new StaveNote({ keys: ["b/4"], duration: "q" }),
+        new StaveNote({ keys: ["g/4"], duration: "q" }),
+        new StaveNote({ keys: ["e/4"], duration: "q" }),
+      ];
+
+      const draw = () => {
+        const syllable = "cdefgab";
+        const choice = Math.floor(Math.random() * 7);
+
+        notes.push(new StaveNote({ keys: [`${syllable[choice]}/4`], duration: "q" }));
+
+        // Helper function to justify and draw a 4/4 voice.
+        Formatter.FormatAndDraw(context, stave, notes);
+      };
+
+      document.getElementById("draw").addEventListener("click", draw);
+    </script>
+  </body>
 </html>
