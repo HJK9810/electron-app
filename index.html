@@ -7,6 +7,7 @@
     <script src="https://cdn.jsdelivr.net/npm/vexflow/build/cjs/vexflow.js"></script>
   </head>
   <body>
+    <button id="draw">입력</button>
     <div id="output"></div>
     <script type="module">
       const { Renderer, Stave, StaveNote, Formatter } = Vex.Flow;
@@ -41,6 +42,18 @@
 
       // Helper function to justify and draw a 4/4 voice.
       Formatter.FormatAndDraw(context, stave, notes);
+
+      const draw = () => {
+        const syllable = "cdefgab";
+        const choice = Math.floor(Math.random() * 7);
+        
+        notes.add(new StaveNote({keys: [`${syllable[choice]}/4`], duration: "q"}));
+        
+        Formatter.FormatAndDraw(context, stave, notes);
+        // location.reload();
+      }
+      
+      document.getElementById("draw").addEventListener("click", draw);
     </script>
   </body>
 </html>
