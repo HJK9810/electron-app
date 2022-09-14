@@ -8,6 +8,7 @@
   </head>
 
   <body>
+    <button id="reload">새로고침</button>
     <button id="draw">입력</button>
     <div id="output"></div>
     <!-- <script type="module" src="./vexflow.js"></script> -->
@@ -52,6 +53,9 @@
         Formatter.FormatAndDraw(context, stave, notes);
       };
 
+      document.getElementById("reload").addEventListener("click", function () {
+        location.reload();
+      });
       document.getElementById("draw").addEventListener("click", draw);
     </script>
   </body>
