@@ -1,59 +1,62 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8" />
-    <title>Let's draw Music!</title>
-    <!-- <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" /> -->
-    <script src="https://cdn.jsdelivr.net/npm/vexflow/build/cjs/vexflow.js"></script>
-  </head>
-  <body>
-    <button id="draw">입력</button>
-    <div id="output"></div>
-    <script type="module">
-      const { Renderer, Stave, StaveNote, Formatter } = Vex.Flow;
 
-      // Create an SVG renderer and attach it to the DIV element with id="output".
-      const div = document.getElementById("output");
-      const renderer = new Renderer(div, Renderer.Backends.SVG);
+<head>
+  <meta charset="UTF-8" />
+  <title>Let's draw Music!</title>
+  <!-- <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" /> -->
+  <script src="https://cdn.jsdelivr.net/npm/vexflow/build/cjs/vexflow.js"></script>
+</head>
 
-      // Configure the rendering context.
-      renderer.resize(750, 500);
-      const context = renderer.getContext();
-      context.setFont("Arial", 10);
+<body>
+  <button id="draw">입력</button>
+  <div id="output"></div>
+  <script type="module">
+    const { Renderer, Stave, StaveNote, Formatter } = Vex.Flow;
 
-      // Create a stave of width 400 at position 10, 40.
-      const stave = new Stave(10, 40, 700);
+    // Create an SVG renderer and attach it to the DIV element with id="output".
+    const div = document.getElementById("output");
+    const renderer = new Renderer(div, Renderer.Backends.SVG);
 
-      // Add a clef and time signature.
-      stave.addClef("treble").addTimeSignature("4/4");
+    // Configure the rendering context.
+    renderer.resize(750, 500);
+    const context = renderer.getContext();
+    context.setFont("Arial", 10);
 
-      // Connect it to the rendering context and draw!
-      stave.setContext(context).draw();
+    // Create a stave of width 400 at position 10, 40.
+    const stave = new Stave(10, 40, 700);
 
-      const notes = [
-        new StaveNote({ keys: ["c/4"], duration: "q" }),
-        new StaveNote({ keys: ["d/4"], duration: "q" }),
-        new StaveNote({ keys: ["b/4"], duration: "qr" }),
-        new StaveNote({ keys: ["c/4", "e/4", "g/4"], duration: "q" }),
-        new StaveNote({ keys: ["b/4"], duration: "q" }),
-        new StaveNote({ keys: ["g/4"], duration: "q" }),
-        new StaveNote({ keys: ["e/4"], duration: "q" }),
-      ];
+    // Add a clef and time signature.
+    stave.addClef("treble").addTimeSignature("4/4");
 
-      // Helper function to justify and draw a 4/4 voice.
+    // Connect it to the rendering context and draw!
+    stave.setContext(context).draw();
+
+    const notes = [
+      new StaveNote({ keys: ["c/4"], duration: "q" }),
+      new StaveNote({ keys: ["d/4"], duration: "q" }),
+      new StaveNote({ keys: ["b/4"], duration: "qr" }),
+      new StaveNote({ keys: ["c/4", "e/4", "g/4"], duration: "q" }),
+      new StaveNote({ keys: ["b/4"], duration: "q" }),
+      new StaveNote({ keys: ["g/4"], duration: "q" }),
+      new StaveNote({ keys: ["e/4"], duration: "q" }),
+    ];
+
+    // Helper function to justify and draw a 4/4 voice.
+    Formatter.FormatAndDraw(context, stave, notes);
+
+    const draw = () => {
+      const syllable = "cdefgab";
+      const choice = Math.floor(Math.random() * 7);
+
+      notes.add(new StaveNote({ keys: [`${syllable[choice]}/4`], duration: "q" }));
+
       Formatter.FormatAndDraw(context, stave, notes);
+      // location.reload();
+    }
 
-      const draw = () => {
-        const syllable = "cdefgab";
-        const choice = Math.floor(Math.random() * 7);
-        
-        notes.add(new StaveNote({keys: [`${syllable[choice]}/4`], duration: "q"}));
-        
-        Formatter.FormatAndDraw(context, stave, notes);
-        // location.reload();
-      }
-      
-      document.getElementById("draw").addEventListener("click", draw);
-    </script>
-  </body>
+    document.getElementById("draw").addEventListener("click", draw);
+  </script>
+</body>
+
 </html>
