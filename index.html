@@ -9,23 +9,24 @@
 
   <body>
     <button id="reload">새로고침</button>
-    <button id="draw">입력</button>
+    <button id="draw">음표 추가</button>
+    <button id="drawPage">악보추가</button>
     <div id="output"></div>
-    <!-- <script type="module" src="./vexflow.js"></script> -->
+
     <script type="module">
       const { Renderer, Stave, StaveNote, Formatter } = Vex.Flow;
 
       // Create an SVG renderer and attach it to the DIV element with id="output".
       const div = document.getElementById("output");
-      const renderer = new Renderer(div, Renderer.Backends.SVG);
+      let renderer = new Renderer(div, Renderer.Backends.SVG);
 
       // Configure the rendering context.
-      renderer.resize(750, 500);
-      const context = renderer.getContext();
+      renderer.resize(750, 150);
+      let context = renderer.getContext();
       context.setFont("Arial", 10);
 
       // Create a stave of width 400 at position 10, 40.
-      const stave = new Stave(10, 40, 700);
+      let stave = new Stave(10, 40, 700);
 
       // Add a clef and time signature.
       stave.addClef("treble").addTimeSignature("4/4");
@@ -33,15 +34,7 @@
       // Connect it to the rendering context and draw!
       stave.setContext(context).draw();
 
-      const notes = [
-        new StaveNote({ keys: ["c/4"], duration: "q" }),
-        new StaveNote({ keys: ["d/4"], duration: "q" }),
-        new StaveNote({ keys: ["b/4"], duration: "qr" }),
-        new StaveNote({ keys: ["c/4", "e/4", "g/4"], duration: "q" }),
-        new StaveNote({ keys: ["b/4"], duration: "q" }),
-        new StaveNote({ keys: ["g/4"], duration: "q" }),
-        new StaveNote({ keys: ["e/4"], duration: "q" }),
-      ];
+      let notes = [];
 
       const draw = () => {
         const syllable = "cdefgab";
@@ -53,10 +46,25 @@
         Formatter.FormatAndDraw(context, stave, notes);
       };
 
+      const drawPage = () => {
+        notes = [];
+        renderer = new Renderer(div, Renderer.Backends.SVG);
+
+        renderer.resize(750, 150);
+        context = renderer.getContext();
+        context.setFont("Arial", 10);
+
+        stave = new Stave(10, 40, 700);
+        stave.addClef("treble").addTimeSignature("4/4");
+
+        stave.setContext(context).draw();
+      };
+
       document.getElementById("reload").addEventListener("click", function () {
         location.reload();
       });
       document.getElementById("draw").addEventListener("click", draw);
+      document.getElementById("drawPage").addEventListener("click", drawPage);
     </script>
   </body>
 </html>
