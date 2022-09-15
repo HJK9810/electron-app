@@ -2,20 +2,41 @@
   "name": "electron-app",
   "version": "1.0.0",
   "description": "for vexflow and musescore",
-  "main": "main.js",
+  "main": "src/main.js",
+  "homepage": "./",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron ."
+    "start": "concurrently \"npm run react:start\" \"npm run electron:start\"",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "electron:start": "wait-on http://localhost:3000 && electron .",
+    "react:start": "react-scripts start"
   },
   "author": "HiJ_K",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^6.1.12"
+    "concurrently": "^7.4.0",
+    "electron": "^6.1.12",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "^5.0.1",
+    "wait-on": "^6.0.1"
   },
   "dependencies": {
     "bootstrap": "^5.2.1",
     "bootstrap-icons": "^1.9.1",
     "sass": "^1.54.9",
     "vexflow": "^4.0.3"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
