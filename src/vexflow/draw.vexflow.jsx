@@ -1,30 +1,21 @@
 import React, { useRef, useEffect } from "react";
-import VexFlow from "vexflow";
-
-const VF = VexFlow.Flow;
-const { Formatter, Renderer, Stave, StaveNote } = VF;
+import { Formatter, Renderer, Stave, StaveNote } from "vexflow";
 
 const clefWidth = 30;
 const timeWidth = 30;
 
-export default function Score({
+export default function Draw({
   staves = [],
   clef = "treble",
   timeSignature = "4/4",
   width = 750,
   height = 150,
 }) {
-  staves = [
-    ["g3", "d4", "e4", "d4"],
-    ["a4", "d4", "e4", "d4"],
-    ["a4", "a4", "b4", "a4"],
-    ["d4", "e4", ["g3", 2]],
-  ];
   const container = useRef();
   const rendererRef = useRef();
 
   useEffect(() => {
-    if (rendererRef.current == null) {
+    if (!rendererRef.current) {
       rendererRef.current = new Renderer(
         container.current,
         Renderer.Backends.SVG
@@ -36,12 +27,12 @@ export default function Score({
     context.setFont("Arial", 10);
     const clefAndTimeWidth =
       (clef ? clefWidth : 0) + (timeSignature ? timeWidth : 0);
-    const staveWidth = (width - 50 - clefAndTimeWidth) / staves.length;
+    const staveWidth = (width - 50 - clefAndTimeWidth) / 4;
 
     let currX = 0;
     staves.forEach((notes, i) => {
       const stave = new Stave(currX, 0, staveWidth);
-      if (i === 0) {
+      if (!i) {
         stave.setWidth(staveWidth + clefAndTimeWidth);
         clef && stave.addClef(clef);
         timeSignature && stave.addTimeSignature(timeSignature);
