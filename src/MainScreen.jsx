@@ -20,6 +20,7 @@ function Main() {
       <button id="reload" onClick={(e) => location.reload()}>
         새로고침
       </button>
+      <button id="reload">음표추가</button>
       <button id="reload" onClick={addDraw}>
         악보추가
       </button>
