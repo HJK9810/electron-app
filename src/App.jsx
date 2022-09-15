@@ -1,5 +1,11 @@
-const App = () => {
-  return <div>hello world</div>;
-};
+import Layout from "./Layout/Layout";
+
+function App() {
+  return (
+    <div className="App">
+      <Layout></Layout>
+    </div>
+  );
+}
 
 export default App;
