@@ -24,6 +24,7 @@ function InputBtn() {
           </label>
         ))}
       </div>
+      <button type="button">선택완료</button>
     </form>
   );
 }

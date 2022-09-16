@@ -57,7 +57,7 @@ export default function Draw({
           ({ key, keys, duration = "q" }) =>
             new StaveNote({
               keys: key ? [key] : keys,
-              duration: String(duration),
+              duration: duration + "",
             })
         );
       Formatter.FormatAndDraw(context, stave, processedNotes, {
