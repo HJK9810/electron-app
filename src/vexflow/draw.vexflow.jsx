@@ -3,6 +3,17 @@ import { Formatter, Renderer, Stave, StaveNote } from "vexflow";
 
 const clefWidth = 30;
 const timeWidth = 30;
+const beats = [16, 8, 4, 2];
+const restSyl = ["b4", "b4", "b4", "c5"];
+
+const fillRestNote = (left) => {
+  let rest = [];
+
+  for (let i = 3; i >= 0; i++) {
+    rest.unshift(Math.floor(left / (1 / beats[i])));
+  }
+  return rest;
+};
 
 export default function Draw({
   staves = [],
@@ -40,11 +51,18 @@ export default function Draw({
       currX += stave.getWidth();
       stave.setContext(context).draw();
 
+      let sum = 0;
       const processedNotes = notes
         .map((note) => (typeof note === "string" ? { key: note } : note))
-        .map((note) =>
-          Array.isArray(note) ? { key: note[0], duration: note[1] } : note
-        )
+        .map((note) => {
+          if (Array.isArray(note)) {
+            sum += 1 / parseInt(note[1]);
+            return { key: note[0], duration: note[1] };
+          } else {
+            sum += 1 / 4;
+            return note;
+          }
+        })
         .map(({ key, ...rest }) =>
           typeof key === "string"
             ? {
@@ -60,6 +78,16 @@ export default function Draw({
               duration: duration + "",
             })
         );
+
+      if (1 - sum) {
+        fillRestNote(1 - sum).map((el, idx) => {
+          for (let index = 0; index < el; index++) {
+            processedNotes.add(
+              new StaveNote({ keys: [restSyl[idx]], duration: beats[idx] })
+            );
+          }
+        });
+      }
       Formatter.FormatAndDraw(context, stave, processedNotes, {
         auto_beam: true,
       });

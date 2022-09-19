@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 import data from "./data";
 
+const syllable = "cdefgab";
+const beats = [16, 8, 4, 2, 1];
+const restSyl = ["b4", "b4", "b4", "c5"];
+
 function InputBtn() {
   const [sylChage, setSylChange] = useState();
   const [beat, setBeat] = useState();
   const [checked, setChecked] = useState(false);
 
-  const syllable = "cdefgab";
-  const beats = [16, 8, 4, 2, 1];
-  const restSyl = ["b4", "b4", "b4", "c5"];
   const obj = data;
   let idx = Object.keys(obj).length ? Object.keys(obj).length : 1;
   const ary = idx in obj ? obj[idx] : [[]];
