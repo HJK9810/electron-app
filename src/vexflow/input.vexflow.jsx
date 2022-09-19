@@ -47,31 +47,31 @@ function InputBtn() {
   };
 
   return (
-    <form>
-      <div>
+    <form style={{margin:"10px"}}>
+      <span style={{margin:"10px"}}>
         음계 :
         {syllable.split("").map((value, i) => (
-          <label key={i}>
+          <label key={i} style={{padding:"5px"}}>
             <input type="radio" name="syllable" value={value} onChange={(e) => setSylChange(e.target.value)} />
             {value}
           </label>
         ))}
-      </div>
-      <div>
+      </span>
+      <span style={{margin:"10px"}}>
         박자 :
         {beats.map((value, i) => (
-          <label key={i}>
+          <label key={i} style={{padding:"5px"}}>
             <input type="radio" name="beats" value={value} onChange={(e) => setBeat(e.target.value)} />
             {value}
           </label>
         ))}
-      </div>
-      <label>
+      </span>
+      <label style={{margin:"10px"}}>
         <input type="checkbox" name="rest" value="rest" onChange={(e) => setChecked(e.target.checked)} />
         쉼표
       </label>
       <br />
-      <button type="button" onClick={forSubmit}>
+      <button type="button" onClick={forSubmit} style={{margin:"10px"}}>
         선택완료
       </button>
     </form>
