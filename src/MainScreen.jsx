@@ -12,8 +12,8 @@ function Main() {
 
   const addDraw = () => {
     setDrawKey(drawKey + 1);
-    const ary = data[drawKey];
-    setDraw(draw.concat(<Draw key={drawKey} staves={ary} />));
+    setDraw(draw.concat(<Draw key={drawKey} staves={data[drawKey]} />));
+    data[drawKey + 1] = [[]];
   };
 
   return (

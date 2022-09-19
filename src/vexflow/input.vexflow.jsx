@@ -32,7 +32,6 @@ function InputBtn() {
           ? sylChage + "4"
           : [sylChage + "4", parseInt(beat)];
     }
-
     ary.map((el) => {
       let sum = 0;
       el.map((element) => {
@@ -50,7 +49,6 @@ function InputBtn() {
     });
 
     data[idx] = ary;
-    // setChecked(false);
   };
 
   return (
