@@ -23,27 +23,22 @@ function InputBtn() {
   }
 
   const forSubmit = () => {
+    console.log(data);
     let input;
     if (checked) {
       input = [restSyl[beats.indexOf(parseInt(beat))], beat + "r"];
     } else {
-      input =
-        parseInt(beat) === 4
-          ? sylChage + "4"
-          : [sylChage + "4", parseInt(beat)];
+      input = parseInt(beat) === 4 ? sylChage + "4" : [sylChage + "4", parseInt(beat)];
     }
     ary.map((el) => {
       let sum = 0;
       el.map((element) => {
-        if (Array.isArray(element))
-          typeof element === "string"
-            ? (sum += 1 / parseInt(element[1].replace("r", "")))
-            : (sum += 1 / element[1]);
-        else sum += 1 / 4;
+        if (Array.isArray(element)) {
+          typeof element[1] === "string" ? (sum += 1 / parseInt(element[1].replace("r", ""))) : (sum += 1 / element[1]);
+        } else sum += 1 / 4;
       });
       if (sum === 1) ary.push([input]);
-      else if (sum + 1 / parseInt(beat) > 1)
-        return alert("사용 불가능한 박자입니다. 다른것을 선택해주세요.");
+      else if (sum + 1 / parseInt(beat) > 1) return alert("사용 불가능한 박자입니다. 다른것을 선택해주세요.");
       // roop out and need beat change
       else el.push(input);
     });
@@ -57,12 +52,7 @@ function InputBtn() {
         음계 :
         {syllable.split("").map((value, i) => (
           <label key={i}>
-            <input
-              type="radio"
-              name="syllable"
-              value={value}
-              onChange={(e) => setSylChange(e.target.value)}
-            />
+            <input type="radio" name="syllable" value={value} onChange={(e) => setSylChange(e.target.value)} />
             {value}
           </label>
         ))}
@@ -71,23 +61,13 @@ function InputBtn() {
         박자 :
         {beats.map((value, i) => (
           <label key={i}>
-            <input
-              type="radio"
-              name="beats"
-              value={value}
-              onChange={(e) => setBeat(e.target.value)}
-            />
+            <input type="radio" name="beats" value={value} onChange={(e) => setBeat(e.target.value)} />
             {value}
           </label>
         ))}
       </div>
       <label>
-        <input
-          type="checkbox"
-          name="rest"
-          value="rest"
-          onChange={(e) => setChecked(e.target.checked)}
-        />
+        <input type="checkbox" name="rest" value="rest" onChange={(e) => setChecked(e.target.checked)} />
         쉼표
       </label>
       <br />
