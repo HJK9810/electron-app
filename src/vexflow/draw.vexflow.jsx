@@ -64,6 +64,21 @@ export default function Draw({
         auto_beam: true,
       });
     });
+
+    if (staves.length != 4) {
+      for (let i = 0; i < 4 - staves.length; i++) {
+        const stave = new Stave(currX, 0, staveWidth);
+        if (!i && !staves.length) {
+          stave.setWidth(staveWidth + clefAndTimeWidth);
+          clef && stave.addClef(clef);
+          timeSignature && stave.addTimeSignature(timeSignature);
+        }
+        currX += stave.getWidth();
+        stave.setContext(context).draw();
+        const note = [new StaveNote({ keys: ["d/5"], duration: "wr" })];
+        Formatter.FormatAndDraw(context, stave, note);
+      }
+    }
   }, [staves]);
 
   return <div ref={container} />;
