@@ -8,6 +8,7 @@ function InputBtn() {
 
   const syllable = "cdefgab";
   const beats = [16, 8, 4, 2, 1];
+  const restSyl = ["b4", "b4", "b4", "c5"];
   const obj = data;
   let idx = Object.keys(obj).length ? Object.keys(obj).length : 1;
   const ary = idx in obj ? obj[idx] : [[]];
@@ -22,10 +23,15 @@ function InputBtn() {
 
   const forSubmit = () => {
     let input;
-    if (parseInt(beat) === 4) input = sylChage + "4";
-    else {
-      input = checked ? [sylChage, beat] : [sylChage + "4", parseInt(beat)];
+    if (checked) {
+      input = [restSyl[beats.indexOf(parseInt(beat))], beat + "r"];
+    } else {
+      input =
+        parseInt(beat) === 4
+          ? sylChage + "4"
+          : [sylChage + "4", parseInt(beat)];
     }
+
     ary.map((el) => {
       let sum = 0;
       el.map((element) => {
@@ -43,30 +49,7 @@ function InputBtn() {
     });
 
     data[idx] = ary;
-  };
-
-  const restCheck = (e) => {
-    if (e) {
-      setChecked(true);
-      switch (beat) {
-        case 16:
-          setSylChange("c4");
-          break;
-        case 8:
-          setSylChange("c4");
-          break;
-        case 4:
-          setSylChange("d4");
-          break;
-        case 2:
-          setSylChange("c5");
-          break;
-        default:
-          setSylChange("d5");
-          break;
-      }
-      setBeat(beat + "r");
-    } else setChecked(false);
+    // setChecked(false);
   };
 
   return (
@@ -100,11 +83,16 @@ function InputBtn() {
         ))}
       </div>
       <label>
-        <input type="checkbox" name="rest" value="rest" onChange={restCheck} />
+        <input
+          type="checkbox"
+          name="rest"
+          value="rest"
+          onChange={(e) => setChecked(e.target.checked)}
+        />
         쉼표
       </label>
       <br />
-      <button type="button" checked={checked} onClick={forSubmit}>
+      <button type="button" onClick={forSubmit}>
         선택완료
       </button>
     </form>
