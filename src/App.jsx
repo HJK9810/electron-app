@@ -1,5 +1,5 @@
 import Layout from "./Layout/Layout";
-import Main from "./MainScreen";
+import Main from "./Screen/Main.Screen";
 
 function App() {
   return (
