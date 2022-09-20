@@ -31,7 +31,6 @@ function InputBtn() {
   }
 
   const forSubmit = () => {
-    console.log(data);
     let input;
     if (checked) {
       input = ["b4", beat + "r"];
@@ -83,7 +82,7 @@ function InputBtn() {
         음계 : <input type="number" name="upDown" min={syllable[sylChage][0]} max={syllable[sylChage][1]} placeholder={"over " + syllable[sylChage][0]} onChange={(e) => setScale(e.target.value)} />
         ("{syllable[sylChage][0]}보다 크고 {syllable[sylChage][1]}보다 작은 수를 입력해주세요.")
       </label>
-      <button type="button" onClick={forSubmit} style={{margin: "10px"}}>
+      <button type="button" onClick={forSubmit} style={{margin: "10px"}} disabled={!sylChage || !beat || !scale ? true : false}>
         선택완료
       </button>
     </form>
