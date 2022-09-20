@@ -17,7 +17,7 @@ const fillRestNote = (notes) => {
     let sum = 0;
     for (let i = 0; i < note.length; i++) {
       if (Array.isArray(note[i])) {
-        note[i][1].includes("r") ? (sum += 1 / parseInt(note[i][1].replace("r", ""))) : (sum += 1 / note[i][1]);
+        sum += 1 / parseInt((note[i][1] + "").replace("r", ""));
       } else sum += 1 / 4;
     }
     if (sum != 1) {
