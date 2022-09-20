@@ -1,12 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from "react";
 import data from "./data";
 
-const syllable = "cdefgab";
+const syllable = {
+  c: [3, 6],
+  d: [3, 5],
+  e: [3, 5],
+  f: [3, 5],
+  g: [2, 5],
+  a: [2, 5],
+  b: [2, 5],
+};
 const beats = [16, 8, 4, 2, 1];
 
 function InputBtn() {
-  const [sylChage, setSylChange] = useState();
-  const [beat, setBeat] = useState();
+  const [sylChage, setSylChange] = useState("c");
+  const [beat, setBeat] = useState("");
+  const [scale, setScale] = useState();
   const [checked, setChecked] = useState(false);
 
   const obj = data;
@@ -27,7 +36,7 @@ function InputBtn() {
     if (checked) {
       input = ["b4", beat + "r"];
     } else {
-      input = parseInt(beat) === 4 ? sylChage + "4" : [sylChage + "4", parseInt(beat)];
+      input = parseInt(beat) === 4 ? sylChage + scale : [sylChage + scale, parseInt(beat)];
     }
     ary.map((el) => {
       let sum = 0;
@@ -46,31 +55,35 @@ function InputBtn() {
   };
 
   return (
-    <form style={{margin:"10px"}}>
-      <span style={{margin:"10px"}}>
+    <form style={{margin: "10px"}}>
+      <span style={{margin: "10px"}}>
         계이름 :
-        {syllable.split("").map((value, i) => (
-          <label key={i} style={{padding:"5px"}}>
+        {Object.keys(syllable).map((value, i) => (
+          <label key={i} style={{padding: "5px"}}>
             <input type="radio" name="syllable" value={value} onChange={(e) => setSylChange(e.target.value)} />
             {value}
           </label>
         ))}
       </span>
-      <span style={{margin:"10px"}}>
+      <span style={{margin: "10px"}}>
         박자 :
         {beats.map((value, i) => (
-          <label key={i} style={{padding:"5px"}}>
+          <label key={i} style={{padding: "5px"}}>
             <input type="radio" name="beats" value={value} onChange={(e) => setBeat(e.target.value)} />
             {value}
           </label>
         ))}
       </span>
-      <label style={{margin:"10px"}}>
+      <label style={{margin: "10px"}}>
         <input type="checkbox" name="rest" value="rest" onChange={(e) => setChecked(e.target.checked)} />
         쉼표
       </label>
       <br />
-      <button type="button" onClick={forSubmit} style={{margin:"10px"}}>
+      <label>
+        음계 : <input type="number" name="upDown" min={syllable[sylChage][0]} max={syllable[sylChage][1]} placeholder={"over " + syllable[sylChage][0]} onChange={(e) => setScale(e.target.value)} />
+        ("{syllable[sylChage][0]}보다 크고 {syllable[sylChage][1]}보다 작은 수를 입력해주세요.")
+      </label>
+      <button type="button" onClick={forSubmit} style={{margin: "10px"}}>
         선택완료
       </button>
     </form>
