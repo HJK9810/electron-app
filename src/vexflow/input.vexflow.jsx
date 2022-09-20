@@ -3,7 +3,6 @@ import data from "./data";
 
 const syllable = "cdefgab";
 const beats = [16, 8, 4, 2, 1];
-const restSyl = ["b4", "b4", "b4", "c5"];
 
 function InputBtn() {
   const [sylChage, setSylChange] = useState();
@@ -26,7 +25,7 @@ function InputBtn() {
     console.log(data);
     let input;
     if (checked) {
-      input = [restSyl[beats.indexOf(parseInt(beat))], beat + "r"];
+      input = ["b4", beat + "r"];
     } else {
       input = parseInt(beat) === 4 ? sylChage + "4" : [sylChage + "4", parseInt(beat)];
     }
@@ -49,7 +48,7 @@ function InputBtn() {
   return (
     <form style={{margin:"10px"}}>
       <span style={{margin:"10px"}}>
-        음계 :
+        계이름 :
         {syllable.split("").map((value, i) => (
           <label key={i} style={{padding:"5px"}}>
             <input type="radio" name="syllable" value={value} onChange={(e) => setSylChange(e.target.value)} />
