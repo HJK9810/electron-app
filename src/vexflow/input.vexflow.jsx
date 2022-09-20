@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from "react";
+import BarCard from "./OneBar.vexflow";
 import data from "./data";
 
 const syllable = {
@@ -21,6 +22,8 @@ function InputBtn() {
   const obj = data;
   let idx = Object.keys(obj).length ? Object.keys(obj).length : 1;
   const ary = idx in obj ? obj[idx] : [[]];
+
+  useEffect(() => setScale(scale), [ary]);
 
   if (ary.length == 4) {
     let sum = 0;
@@ -54,38 +57,41 @@ function InputBtn() {
   };
 
   return (
-    <form style={{margin: "10px"}}>
-      <span style={{margin: "10px"}}>
-        계이름 :
-        {Object.keys(syllable).map((value, i) => (
-          <label key={i} style={{padding: "5px"}}>
-            <input type="radio" name="syllable" value={value} onChange={(e) => setSylChange(e.target.value)} />
-            {value}
-          </label>
-        ))}
-      </span>
-      <span style={{margin: "10px"}}>
-        박자 :
-        {beats.map((value, i) => (
-          <label key={i} style={{padding: "5px"}}>
-            <input type="radio" name="beats" value={value} onChange={(e) => setBeat(e.target.value)} />
-            {value}
-          </label>
-        ))}
-      </span>
-      <label style={{margin: "10px"}}>
-        <input type="checkbox" name="rest" value="rest" onChange={(e) => setChecked(e.target.checked)} />
-        쉼표
-      </label>
-      <br />
-      <label>
-        음계 : <input type="number" name="upDown" min={syllable[sylChage][0]} max={syllable[sylChage][1]} placeholder={"over " + syllable[sylChage][0]} onChange={(e) => setScale(e.target.value)} />
-        ("{syllable[sylChage][0]}보다 크고 {syllable[sylChage][1]}보다 작은 수를 입력해주세요.")
-      </label>
-      <button type="button" onClick={forSubmit} style={{margin: "10px"}} disabled={!sylChage || !beat || !scale ? true : false}>
-        선택완료
-      </button>
-    </form>
+    <>
+      <form style={{margin: "10px"}}>
+        <span style={{margin: "10px"}}>
+          계이름 :
+          {Object.keys(syllable).map((value, i) => (
+            <label key={i} style={{padding: "5px"}}>
+              <input type="radio" name="syllable" value={value} onChange={(e) => setSylChange(e.target.value)} />
+              {value}
+            </label>
+          ))}
+        </span>
+        <span style={{margin: "10px"}}>
+          박자 :
+          {beats.map((value, i) => (
+            <label key={i} style={{padding: "5px"}}>
+              <input type="radio" name="beats" value={value} onChange={(e) => setBeat(e.target.value)} />
+              {value}
+            </label>
+          ))}
+        </span>
+        <label style={{margin: "10px"}}>
+          <input type="checkbox" name="rest" value="rest" onChange={(e) => setChecked(e.target.checked)} />
+          쉼표
+        </label>
+        <br />
+        <label>
+          음계 : <input type="number" name="upDown" min={syllable[sylChage][0]} max={syllable[sylChage][1]} placeholder={"over " + syllable[sylChage][0]} onChange={(e) => setScale(e.target.value)} />
+          ("{syllable[sylChage][0]}보다 크고 {syllable[sylChage][1]}보다 작은 수를 입력해주세요.")
+        </label>
+        <button type="button" onClick={forSubmit} style={{margin: "10px"}} disabled={!sylChage || !beat || !scale ? true : false}>
+          선택완료
+        </button>
+      </form>
+      <BarCard notes={data[idx]} />
+    </>
   );
 }
 

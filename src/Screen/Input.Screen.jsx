@@ -2,11 +2,11 @@ import InputBtn from "../vexflow/input.vexflow";
 import BarCard from "../vexflow/OneBar.vexflow";
 import data from "../vexflow/data";
 
-const InputS = (index) => {
+const InputS = () => {
   return (
     <>
       <InputBtn />
-      <BarCard notes={data[index]} />
+      {/* <BarCard notes={data[index]} /> */}
     </>
   );
 };
