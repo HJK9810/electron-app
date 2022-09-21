@@ -12,12 +12,14 @@ const syllable = {
   b: [2, 5],
 };
 const beats = [16, 8, 4, 2, 1];
+const korSyllable = ["도", "레", "미", "파", "솔", "라", "시"];
 
 function InputBtn() {
   const [sylChage, setSylChange] = useState("c");
   const [beat, setBeat] = useState("");
   const [scale, setScale] = useState();
   const [checked, setChecked] = useState(false);
+  const [notes, setNotes] = useState([]);
 
   const obj = data;
   let idx = Object.keys(obj).length ? Object.keys(obj).length : 1;
@@ -54,6 +56,7 @@ function InputBtn() {
     });
 
     data[idx] = ary;
+    setNotes(ary);
   };
 
   return (
@@ -64,7 +67,7 @@ function InputBtn() {
           {Object.keys(syllable).map((value, i) => (
             <label key={i} className="p-2 form-check-label">
               <input type="radio" className="form-check-input" name="syllable" value={value} onChange={(e) => setSylChange(e.target.value)} />
-              {value}
+              {korSyllable[i]}
             </label>
           ))}
         </span>
@@ -92,7 +95,7 @@ function InputBtn() {
           선택완료
         </button>
       </form>
-      <BarCard notes={data[idx]} />
+      <BarCard notes={notes} />
     </>
   );
 }
