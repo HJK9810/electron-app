@@ -42,18 +42,25 @@ function InputBtn() {
     } else {
       input = parseInt(beat) === 4 ? sylChage + scale : [sylChage + scale, parseInt(beat)];
     }
-    ary.map((el) => {
+
+    for (let i = 0; i < ary.length; i++) {
       let sum = 0;
-      el.map((element) => {
-        if (Array.isArray(element)) {
-          typeof element[1] === "string" ? (sum += 1 / parseInt(element[1].replace("r", ""))) : (sum += 1 / element[1]);
+      ary[i].map((el) => {
+        if (Array.isArray(el)) {
+          typeof el[1] === "string" ? (sum += 1 / parseInt(el[1].replace("r", ""))) : (sum += 1 / el[1]);
         } else sum += 1 / 4;
       });
-      if (sum === 1) ary.push([input]);
+
+      if (sum === 1 && i < ary.length - 1) continue;
+
+      // if can use? it needs to stop loop
+      if (sum === 1 && i === ary.length - 1) ary.push([input]);
       else if (sum + 1 / parseInt(beat) > 1) return alert("사용 불가능한 박자입니다. 다른것을 선택해주세요.");
       // roop out and need beat change
-      else el.push(input);
-    });
+      else ary[i].push(input);
+
+      break;
+    }
 
     setSylChange("c");
     setBeat("");
