@@ -17,13 +17,13 @@ function Main() {
 
   return (
     <Container>
-      <button id="reload" onClick={(e) => location.reload()}>
+      <button id="reload" className="m-1 btn btn-outline-warning" onClick={(e) => location.reload()}>
         새로고침
       </button>
-      <button id="addNote" onClick={(e) => (show == "none" ? setShow("block") : setShow("none"))}>
+      <button id="addNote" className="m-1 btn btn-outline-success" onClick={(e) => (show == "none" ? setShow("block") : setShow("none"))}>
         음표추가
       </button>
-      <button id="addDraw" onClick={addDraw}>
+      <button id="addDraw" className="m-1 btn btn-outline-success" onClick={addDraw}>
         악보추가
       </button>
       <div style={{display: show}}>

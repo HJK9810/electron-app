@@ -58,35 +58,37 @@ function InputBtn() {
 
   return (
     <>
-      <form style={{margin: "10px"}}>
-        <span style={{margin: "10px"}}>
+      <form className="m-1">
+        <span className="m-1">
           계이름 :
           {Object.keys(syllable).map((value, i) => (
-            <label key={i} style={{padding: "5px"}}>
-              <input type="radio" name="syllable" value={value} onChange={(e) => setSylChange(e.target.value)} />
+            <label key={i} className="p-2 form-check-label">
+              <input type="radio" className="form-check-input" name="syllable" value={value} onChange={(e) => setSylChange(e.target.value)} />
               {value}
             </label>
           ))}
         </span>
-        <span style={{margin: "10px"}}>
+        <span className="m-1">
           박자 :
           {beats.map((value, i) => (
-            <label key={i} style={{padding: "5px"}}>
-              <input type="radio" name="beats" value={value} onChange={(e) => setBeat(e.target.value)} />
+            <label key={i} className="p-2 form-check-label">
+              <input type="radio" className="form-check-input" name="beats" value={value} onChange={(e) => setBeat(e.target.value)} />
               {value}
             </label>
           ))}
         </span>
-        <label style={{margin: "10px"}}>
-          <input type="checkbox" name="rest" value="rest" onChange={(e) => setChecked(e.target.checked)} />
+        <label className="m-1 form-check-label">
+          <input type="checkbox" className="form-check-input" name="rest" value="rest" onChange={(e) => setChecked(e.target.checked)} />
           쉼표
         </label>
         <br />
-        <label>
-          음계 : <input type="number" name="upDown" min={syllable[sylChage][0]} max={syllable[sylChage][1]} placeholder={"over " + syllable[sylChage][0]} onChange={(e) => setScale(e.target.value)} />
-          ("{syllable[sylChage][0]}보다 크고 {syllable[sylChage][1]}보다 작은 수를 입력해주세요.")
-        </label>
-        <button type="button" onClick={forSubmit} style={{margin: "10px"}} disabled={!sylChage || !beat || !scale ? true : false}>
+        <fieldset>
+          <label htmlFor="upDown" className="form-label">
+            음계 : {scale}
+          </label>
+          <input type="range" className="form-range" id="upDown" min={syllable[sylChage][0]} max={syllable[sylChage][1]} step="1" onChange={(e) => setScale(e.target.value)} />
+        </fieldset>
+        <button type="button" className="m-1 btn btn-outline-info" onClick={forSubmit} disabled={!sylChage || !beat || !scale ? true : false}>
           선택완료
         </button>
       </form>

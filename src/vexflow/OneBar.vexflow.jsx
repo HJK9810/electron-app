@@ -5,12 +5,12 @@ const BarCard = ({notes = [[]]}) => {
 
   useEffect(() => {
     setAry(notes);
-  }, []);
+  }, [notes]);
 
   return (
-    <div>
+    <div style={{width: "25%"}}>
       {ary.map((el, i) => (
-        <div key={i}>
+        <ul key={i} className="list-group">
           {el.map((element, idx) => {
             let line = "";
             if (Array.isArray(element)) {
@@ -21,9 +21,13 @@ const BarCard = ({notes = [[]]}) => {
                 line = beat == 1 ? element[0] + " 온음표" : element[0] + " " + beat + "분음표";
               }
             } else line = element + " 4분음표";
-            return <div key={i + idx / 100}>{line}</div>;
+            return (
+              <li key={i + idx / 100} className="list-group-item">
+                {line}
+              </li>
+            );
           })}
-        </div>
+        </ul>
       ))}
     </div>
   );
