@@ -8,13 +8,13 @@ const BarCard = ({notes = [[]]}) => {
   }, [notes]);
 
   return (
-    <div style={{width: "25%"}}>
+    <div>
       {ary.map((el, i) => (
-        <ul key={i} className="list-group">
+        <ul key={i} className="list-group d-inline-block" style={{width: "25%"}}>
           {el.map((element, idx) => {
             let line = "";
             if (Array.isArray(element)) {
-              const beat = element[1];
+              const beat = element[1] + "";
               if (beat && beat.includes("r")) {
                 line = parseInt(beat.replace("r", "")) == 1 ? element[0] + " 온쉼표" : element[0] + " " + beat + "분쉼표";
               } else {
