@@ -20,10 +20,10 @@ function Main() {
       <button id="reload" onClick={(e) => location.reload()}>
         새로고침
       </button>
-      <button id="reload" onClick={(e) => (show == "none" ? setShow("block") : setShow("none"))}>
+      <button id="addNote" onClick={(e) => (show == "none" ? setShow("block") : setShow("none"))}>
         음표추가
       </button>
-      <button id="reload" onClick={addDraw}>
+      <button id="addDraw" onClick={addDraw}>
         악보추가
       </button>
       <div style={{display: show}}>
