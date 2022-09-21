@@ -14,9 +14,10 @@ const BarCard = ({notes = [[]]}) => {
           {el.map((element, idx) => {
             let line = "";
             if (Array.isArray(element)) {
-              const beat = element[1] + "";
+              let beat = element[1] + "";
               if (beat && beat.includes("r")) {
-                line = parseInt(beat.replace("r", "")) == 1 ? element[0] + " 온쉼표" : element[0] + " " + beat + "분쉼표";
+                beat = beat.replace("r", "");
+                line = parseInt(beat) == 1 ? element[0] + " 온쉼표" : element[0] + " " + beat + "분쉼표";
               } else {
                 line = beat == 1 ? element[0] + " 온음표" : element[0] + " " + beat + "분음표";
               }

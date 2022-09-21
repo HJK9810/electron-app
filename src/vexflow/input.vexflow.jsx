@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-// import BarCard from "./OneBar.vexflow";
+import BarCard from "./OneBar.vexflow";
 import data from "./data";
 
 const syllable = {
@@ -94,29 +94,7 @@ function InputBtn({index}) {
           선택완료
         </button>
       </form>
-      <div>
-        {notes.map((el, i) => (
-          <ul key={i} className="list-group d-inline-block" style={{width: "25%"}}>
-            {el.map((element, idx) => {
-              let line = "";
-              if (Array.isArray(element)) {
-                let beat = element[1] + "";
-                if (beat && beat.includes("r")) {
-                  beat = beat.replace("r", "");
-                  line = parseInt(beat) == 1 ? element[0] + " 온쉼표" : element[0] + " " + beat + "분쉼표";
-                } else {
-                  line = beat == 1 ? element[0] + " 온음표" : element[0] + " " + beat + "분음표";
-                }
-              } else line = element + " 4분음표";
-              return (
-                <li key={i + idx / 100} className="list-group-item">
-                  {line}
-                </li>
-              );
-            })}
-          </ul>
-        ))}
-      </div>
+      <BarCard notes={notes} />
     </>
   );
 }
