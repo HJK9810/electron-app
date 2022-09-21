@@ -1,7 +1,7 @@
 import {Container} from "react-bootstrap";
 import {useState} from "react";
 import Draw from "../vexflow/draw.vexflow";
-import InputS from "./Input.Screen";
+import InputBtn from "../vexflow/input.vexflow";
 import data from "../vexflow/data";
 
 function Main() {
@@ -27,7 +27,7 @@ function Main() {
         악보추가
       </button>
       <div style={{display: show}}>
-        <InputS index={drawKey} />
+        <InputBtn />
       </div>
       {draw}
     </Container>
