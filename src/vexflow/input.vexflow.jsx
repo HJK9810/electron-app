@@ -14,26 +14,16 @@ const syllable = {
 const beats = [16, 8, 4, 2, 1];
 const korSyllable = ["도", "레", "미", "파", "솔", "라", "시"];
 
-function InputBtn() {
+function InputBtn({index}) {
   const [sylChage, setSylChange] = useState("c");
   const [beat, setBeat] = useState("");
   const [scale, setScale] = useState();
   const [checked, setChecked] = useState(false);
-  const [notes, setNotes] = useState([]);
 
-  const obj = data;
-  let idx = Object.keys(obj).length ? Object.keys(obj).length : 1;
-  const ary = idx in obj ? obj[idx] : [[]];
+  const ary = index in data ? data[index] : [[]];
+  const [notes, setNotes] = useState(ary);
 
   useEffect(() => setScale(scale), [ary]);
-
-  if (ary.length == 4) {
-    let sum = 0;
-    ary.map((el) => {
-      Array.isArray(el) ? (sum += 1 / el[1]) : (sum += 1 / 4);
-    });
-    if (sum == 1) idx++;
-  }
 
   const forSubmit = () => {
     let input;
@@ -55,8 +45,7 @@ function InputBtn() {
 
       // if can use? it needs to stop loop
       if (sum === 1 && i === ary.length - 1) ary.push([input]);
-      else if (sum + 1 / parseInt(beat) > 1) return alert("사용 불가능한 박자입니다. 다른것을 선택해주세요.");
-      // roop out and need beat change
+      else if (sum + 1 / parseInt(beat) > 1) return alert("사용 불가능한 박자입니다. 다른것을 선택해주세요."); // roop out and need beat change
       else ary[i].push(input);
 
       break;
@@ -65,7 +54,7 @@ function InputBtn() {
     setSylChange("c");
     setBeat("");
     setChecked(false);
-    data[idx] = ary;
+    data[index] = ary;
     setNotes(ary);
   };
 
@@ -111,9 +100,10 @@ function InputBtn() {
             {el.map((element, idx) => {
               let line = "";
               if (Array.isArray(element)) {
-                const beat = element[1] + "";
+                let beat = element[1] + "";
                 if (beat && beat.includes("r")) {
-                  line = parseInt(beat.replace("r", "")) == 1 ? element[0] + " 온쉼표" : element[0] + " " + beat + "분쉼표";
+                  beat = beat.replace("r", "");
+                  line = parseInt(beat) == 1 ? element[0] + " 온쉼표" : element[0] + " " + beat + "분쉼표";
                 } else {
                   line = beat == 1 ? element[0] + " 온음표" : element[0] + " " + beat + "분음표";
                 }

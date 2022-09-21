@@ -27,7 +27,7 @@ function Main() {
         악보추가
       </button>
       <div style={{display: show}}>
-        <InputBtn />
+        <InputBtn index={drawKey} />
       </div>
       {draw}
     </Container>
