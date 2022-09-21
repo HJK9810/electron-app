@@ -65,7 +65,7 @@ function InputBtn({index}) {
           계이름 :
           {Object.keys(syllable).map((value, i) => (
             <label key={i} className="p-2 form-check-label">
-              <input type="radio" className="form-check-input" name="syllable" value={value} onChange={(e) => setSylChange(e.target.value)} />
+              <input type="radio" className="form-check-input" name="syllable" value={value} onChange={(e) => setSylChange(e.target.value)} checked={value == sylChage ? true : false} />
               {korSyllable[i]}
             </label>
           ))}
@@ -74,13 +74,13 @@ function InputBtn({index}) {
           박자 :
           {beats.map((value, i) => (
             <label key={i} className="p-2 form-check-label">
-              <input type="radio" className="form-check-input" name="beats" value={value} onChange={(e) => setBeat(e.target.value)} />
+              <input type="radio" className="form-check-input" name="beats" value={value} onChange={(e) => setBeat(e.target.value)} checked={value == beat ? true : false} />
               {value}
             </label>
           ))}
         </span>
         <label className="m-1 form-check-label">
-          <input type="checkbox" className="form-check-input" name="rest" value="rest" onChange={(e) => setChecked(e.target.checked)} />
+          <input type="checkbox" className="form-check-input" name="rest" value="rest" onChange={(e) => setChecked(e.target.checked)} checked={checked ? true : false} />
           쉼표
         </label>
         <br />
