@@ -23,11 +23,12 @@ function Main() {
       <button id="addNote" className="m-1 btn btn-outline-success" onClick={(e) => (show == "none" ? setShow("block") : setShow("none"))}>
         음표추가
       </button>
-      <button id="addDraw" className="m-1 btn btn-outline-success" onClick={addDraw}>
-        악보추가
-      </button>
+
       <div style={{display: show}}>
         <InputBtn index={drawKey} />
+        <button id="addDraw" className="m-1 btn btn-outline-success" onClick={addDraw}>
+          악보추가
+        </button>
       </div>
       {draw}
     </Container>
