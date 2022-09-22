@@ -10,7 +10,7 @@ const BarCard = ({notes = [[]]}) => {
   return (
     <div>
       {ary.map((el, i) => (
-        <ul key={i} className="list-group d-inline-block" style={{width: "25%"}}>
+        <ul key={i} className="m-1 list-group d-inline-block" style={{width: "25%"}}>
           {el.map((element, idx) => {
             let line = "";
             if (Array.isArray(element)) {
