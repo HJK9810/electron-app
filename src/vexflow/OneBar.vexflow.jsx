@@ -2,6 +2,15 @@ import {useEffect, useState} from "react";
 
 const BarCard = ({notes = [[]]}) => {
   const [ary, setAry] = useState([]);
+  const korSyllable = {
+    c: "도",
+    d: "레",
+    e: "미",
+    f: "파",
+    g: "솔",
+    a: "라",
+    b: "시",
+  };
 
   useEffect(() => {
     setAry(notes);
@@ -14,14 +23,15 @@ const BarCard = ({notes = [[]]}) => {
           {el.map((element, idx) => {
             let line = "";
             if (Array.isArray(element)) {
+              const syllable = element[0].charAt(1) + "옥타브 " + korSyllable[element[0].charAt(0)];
               let beat = element[1] + "";
               if (beat && beat.includes("r")) {
                 beat = beat.replace("r", "");
-                line = parseInt(beat) == 1 ? element[0] + " 온쉼표" : element[0] + " " + beat + "분쉼표";
+                line = parseInt(beat) == 1 ? syllable + " 온쉼표" : syllable + " " + beat + "분쉼표";
               } else {
-                line = beat == 1 ? element[0] + " 온음표" : element[0] + " " + beat + "분음표";
+                line = beat == 1 ? syllable + " 온음표" : syllable + " " + beat + "분음표";
               }
-            } else line = element + " 4분음표";
+            } else line = element.charAt(1) + "옥타브 " + korSyllable[element.charAt(0)] + " 4분음표";
             return (
               <li key={i + idx / 100} className="list-group-item">
                 {line}
