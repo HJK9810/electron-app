@@ -27,7 +27,7 @@ const BarCard = ({notes = [[]]}) => {
               let beat = element[1] + "";
               if (beat && beat.includes("r")) {
                 beat = beat.replace("r", "");
-                line = parseInt(beat) == 1 ? syllable + " 온쉼표" : syllable + " " + beat + "분쉼표";
+                line = parseInt(beat) == 1 ? "온쉼표" : beat + "분쉼표";
               } else {
                 line = beat == 1 ? syllable + " 온음표" : syllable + " " + beat + "분음표";
               }
