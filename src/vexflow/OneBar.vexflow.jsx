@@ -19,7 +19,7 @@ const BarCard = ({notes = [[]]}) => {
   return (
     <div>
       {ary.map((el, i) => (
-        <ul key={i} className="m-1 list-group d-inline-block" style={{width: "25%"}}>
+        <ul key={i} className="m-1 list-group d-inline-block" style={{width: "24%"}}>
           {el.map((element, idx) => {
             let line = "";
             if (Array.isArray(element)) {
@@ -27,7 +27,7 @@ const BarCard = ({notes = [[]]}) => {
               let beat = element[1] + "";
               if (beat && beat.includes("r")) {
                 beat = beat.replace("r", "");
-                line = parseInt(beat) == 1 ? syllable + " 온쉼표" : syllable + " " + beat + "분쉼표";
+                line = parseInt(beat) == 1 ? "온쉼표" : beat + "분쉼표";
               } else {
                 line = beat == 1 ? syllable + " 온음표" : syllable + " " + beat + "분음표";
               }
