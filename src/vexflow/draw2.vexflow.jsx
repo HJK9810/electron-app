@@ -1,5 +1,5 @@
 import React, {useRef, useEffect} from "react";
-import {Formatter, Renderer, Stave, StaveNote} from "vexflow";
+import {Formatter, Renderer, Stave, StaveNote, Voice, Accidental} from "vexflow";
 import fillRestNote from "./FillRest";
 import {calculateWidthAndX, calculateHeightAndY} from "./draw";
 
@@ -52,11 +52,11 @@ export default function Draw({staves = [], clef = "treble", timeSignature = "4/4
         break;
       }
     }
-    currentNotes[pos] = new VF.StaveNote({
+    currentNotes[pos] = new StaveNote({
       clef: "treble",
       keys: ["f#/4"],
       duration: "q",
-    }).addAccidental(0, new VF.Accidental("#"));
+    }).addAccidental(0, new Accidental("#"));
 
     //- recover and draw all bars and its notes
     for (let barPos = 0; barPos < bars.length; barPos++) {
@@ -69,9 +69,9 @@ export default function Draw({staves = [], clef = "treble", timeSignature = "4/4
       }
       bar.draw();
 
-      let voice = new VF.Voice({num_beats: 4, beat_value: 4});
+      let voice = new Voice({num_beats: 4, beat_value: 4});
       voice.addTickables(notesOfBars[barPos]);
-      new VF.Formatter().joinVoices([voice]).format([voice], 350);
+      new Formatter().joinVoices([voice]).format([voice], 350);
       voice.draw(context, bars[barPos]);
     }
   };
@@ -79,7 +79,7 @@ export default function Draw({staves = [], clef = "treble", timeSignature = "4/4
   const createBar = (barPos, widthAndX, heightAndY) => {
     let widthAndXPosition = Math.floor(barPos % amountOfBarsPerRow);
 
-    let bar = new VF.Stave(barPos == 0 ? 10 : widthAndX, barPos == 0 ? 40 : heightAndY, widthAndXPosition == 0 ? 400 : 350).setContext(context);
+    let bar = new Stave(barPos == 0 ? 10 : widthAndX, barPos == 0 ? 40 : heightAndY, widthAndXPosition == 0 ? 400 : 350).setContext(context);
     if (barPos == 0) bar.addTimeSignature("4/4");
     if (widthAndXPosition == 0) bar.addClef("treble");
     return bar;
