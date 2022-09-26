@@ -1,6 +1,6 @@
 import {Container} from "react-bootstrap";
 import {useState} from "react";
-import Draw from "../vexflow/draw.vexflow";
+import Draw from "../vexflow/draw2.vexflow";
 import InputBtn from "../vexflow/input.vexflow";
 import data from "../vexflow/data";
 
