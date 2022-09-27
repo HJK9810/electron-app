@@ -10,4 +10,7 @@
  */
 let data = {};
 
+export let bars = [];
+export let notesOfBars = []; //In each position it has an array of 4 notes
+
 export default data;

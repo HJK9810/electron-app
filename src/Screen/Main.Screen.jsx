@@ -1,17 +1,17 @@
 import {Container} from "react-bootstrap";
 import {useState} from "react";
 import Draw from "../vexflow/draw2.vexflow";
-import InputBtn from "../vexflow/input.vexflow";
+import InputBtn from "../vexflow/input2.vexflow";
 import data from "../vexflow/data";
 
 function Main() {
   const [draw, setDraw] = useState([]);
   const [show, setShow] = useState("none");
-  const [drawKey, setDrawKey] = useState(1);
+  const [drawKey, setDrawKey] = useState(0);
 
   const addDraw = () => {
     setDrawKey(drawKey + 1);
-    setDraw(draw.concat(<Draw key={drawKey} staves={data[drawKey]} />));
+    setDraw(draw.concat(<Draw key={drawKey} staves={data[drawKey]} index={drawKey + 1} />));
     data[drawKey + 1] = [[]];
   };
 
@@ -23,12 +23,12 @@ function Main() {
       <button id="addNote" className="m-1 btn btn-outline-success" onClick={(e) => (show == "none" ? setShow("block") : setShow("none"))}>
         음표추가
       </button>
+      <button id="addDraw" className="m-1 btn btn-outline-success" onClick={addDraw}>
+        악보추가
+      </button>
 
       <div style={{display: show}}>
         <InputBtn index={drawKey} />
-        <button id="addDraw" className="m-1 btn btn-outline-success" onClick={addDraw}>
-          악보추가
-        </button>
       </div>
       {draw}
     </Container>
