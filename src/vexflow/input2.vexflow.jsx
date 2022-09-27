@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {Formatter, Renderer, Stave, StaveNote, Voice, Barline} from "vexflow";
+import {Formatter, Renderer, Stave, StaveNote, Voice, Barline, RenderContext} from "vexflow";
 import {data, bars, notesOfBars} from "./data";
 import {calculateWidthAndX, calculateHeightAndY} from "./draw";
 
@@ -33,9 +33,9 @@ function InputBtn({index = 0}) {
     const renderer = new Renderer(divStave, Renderer.Backends.SVG);
     const context = renderer.getContext();
     //- clear context: this removes previous notes and staves
-    context.clear();
-    // context.rect(10, 40, rendererWidth, rendererHeight, { stroke: 'none', fill: 'white' });
-    const currentNotes = notesOfBars[0];
+    // context.clear();
+    context.rect(10, 40, 750, 150, {stroke: "none", fill: "white"});
+    let currentNotes = notesOfBars[0];
 
     //- we put a note in current bar
     let pos;
@@ -51,6 +51,8 @@ function InputBtn({index = 0}) {
       duration: beat,
     });
 
+    notesOfBars[0] = currentNotes;
+
     //- recover and draw all bars and its notes
     for (let barPos = 0; barPos < bars.length; barPos++) {
       let widthAndX = calculateWidthAndX(bars[barPos], bars);
@@ -65,8 +67,7 @@ function InputBtn({index = 0}) {
       }
       bar.draw();
 
-      let voice = new Voice({num_beats: 4, beat_value: 4});
-      voice.addTickables(notesOfBars[barPos]);
+      const voice = new Voice({num_beats: 4, beat_value: 4}).addTickables(notesOfBars[barPos]);
       new Formatter().joinVoices([voice]).format([voice], 350);
       voice.draw(context, bars[barPos]);
     }
