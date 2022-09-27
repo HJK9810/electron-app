@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {Formatter, Renderer, Stave, StaveNote, Voice, Accidental, Barline} from "vexflow";
+import {Formatter, Renderer, Stave, StaveNote, Voice, Barline} from "vexflow";
 import {data, bars, notesOfBars} from "./data";
 import {calculateWidthAndX, calculateHeightAndY} from "./draw";
 
@@ -48,7 +48,7 @@ function InputBtn({index = 0}) {
     currentNotes[pos] = new StaveNote({
       clef: "treble",
       keys: [sylChage + "/" + beat],
-      duration: "q",
+      duration: beat,
     });
 
     //- recover and draw all bars and its notes
@@ -79,17 +79,7 @@ function InputBtn({index = 0}) {
           계이름 :
           {Object.keys(syllable).map((value, i) => (
             <label key={i} className="p-2 form-check-label">
-              <input
-                type="radio"
-                className="form-check-input"
-                name="syllable"
-                value={value}
-                onChange={(e) => {
-                  setSylChange(e.target.value);
-                  divStaveClicked(e);
-                }}
-                checked={value == sylChage ? true : false}
-              />
+              <input type="radio" className="form-check-input" name="syllable" value={value} onChange={(e) => setSylChange(e.target.value)} checked={value == sylChage ? true : false} />
               {korSyllable[i]}
             </label>
           ))}
@@ -98,33 +88,13 @@ function InputBtn({index = 0}) {
           박자 :
           {beats.map((value, i) => (
             <label key={i} className="p-2 form-check-label">
-              <input
-                type="radio"
-                className="form-check-input"
-                name="beats"
-                value={value}
-                onChange={(e) => {
-                  setBeat(e.target.value);
-                  divStaveClicked(e);
-                }}
-                checked={value == beat ? true : false}
-              />
+              <input type="radio" className="form-check-input" name="beats" value={value} onChange={(e) => setBeat(e.target.value)} checked={value == beat ? true : false} />
               {value}
             </label>
           ))}
         </span>
         <label className="m-1 form-check-label">
-          <input
-            type="checkbox"
-            className="form-check-input"
-            name="rest"
-            value="rest"
-            onChange={(e) => {
-              setChecked(e.target.checked);
-              divStaveClicked(e);
-            }}
-            checked={checked ? true : false}
-          />
+          <input type="checkbox" className="form-check-input" name="rest" value="rest" onChange={(e) => setChecked(e.target.checked)} checked={checked ? true : false} />
           쉼표
         </label>
         <br />
@@ -132,22 +102,11 @@ function InputBtn({index = 0}) {
           <label htmlFor="upDown" className="form-label">
             음계 : {scale}
           </label>
-          <input
-            type="range"
-            className="form-range"
-            id="upDown"
-            min={syllable[sylChage][0]}
-            max={syllable[sylChage][1]}
-            step="1"
-            onChange={(e) => {
-              setScale(e.target.value);
-              divStaveClicked(e);
-            }}
-          />
+          <input type="range" className="form-range" id="upDown" min={syllable[sylChage][0]} max={syllable[sylChage][1]} step="1" onChange={(e) => setScale(e.target.value)} />
         </fieldset>
-        {/* <button type="button" className="m-1 btn btn-outline-info" onClick={forSubmit} disabled={!sylChage || !beat || !scale ? true : false}>
+        <button type="button" className="m-1 btn btn-outline-info" onClick={divStaveClicked} disabled={!sylChage || !beat || !scale ? true : false}>
           선택완료
-        </button> */}
+        </button>
       </form>
     </>
   );
