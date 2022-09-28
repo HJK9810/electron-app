@@ -46,9 +46,9 @@ function InputBtn({index = 0}) {
           sum += 1 / parseInt(ary[1]);
         }
         if (sum + 1 / parseInt(beat) <= 1) {
-          checked ? line.push(sylChage + scale + "/" + beat + "/r") : line.push(sylChage + scale + "/" + beat);
+          checked ? line.push("b4/" + beat + "/r") : line.push(sylChage + scale + "/" + beat);
           out = true;
-        } else if (sum + 1 / parseInt(beat) > 1) return alert("사용 불가능한 박자입니다. 다른것을 선택해주세요."); // roop out and need beat change
+        } else if (sum != 1 && sum + 1 / parseInt(beat) > 1) return alert("사용 불가능한 박자입니다. 다른것을 선택해주세요."); // roop out and need beat change
 
         currentNotes[notePos] = line.join(", ");
       }

@@ -18,10 +18,8 @@ const fillRestNote = (notes) => {
     let sum = 0;
     const line = note.trim().split(",");
     for (let i = 0; i < line.length; i++) {
-      if (!line[i].includes("r")) {
-        const beat = line[i].split("/")[1] == "w" ? 1 : parseInt(line[i].split("/")[1]);
-        sum += 1 / beat;
-      }
+      const beat = line[i].split("/")[1] == "w" ? 1 : parseInt(line[i].split("/")[1]);
+      sum += 1 / beat;
     }
     if (sum != 1) {
       const rest = fillNote(1 - sum);
