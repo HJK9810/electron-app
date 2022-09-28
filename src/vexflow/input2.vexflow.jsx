@@ -14,6 +14,8 @@ const syllable = {
 };
 const beats = [16, 8, 4, 2, 1];
 const korSyllable = ["도", "레", "미", "파", "솔", "라", "시"];
+const clefAndTimeWidth = 60;
+const staveWidth = (700 - clefAndTimeWidth) / 4;
 
 function InputBtn({index = 0}) {
   const [sylChage, setSylChange] = useState("c");
@@ -21,71 +23,70 @@ function InputBtn({index = 0}) {
   const [scale, setScale] = useState();
   const [checked, setChecked] = useState(false);
 
-  let currentNotes = data[index];
-  useEffect(() => setScale(), [currentNotes]);
+  let currentNotes = index in data ? [...data[index]] : ["d5/w/r", "d5/w/r", "d5/w/r", "d5/w/r"];
+  useEffect(() => {
+    let out = false;
+    if (scale && beat) {
+      currentNotes = [...data[index]];
+      for (let notePos = 0; notePos < currentNotes.length; notePos++) {
+        if (currentNotes[notePos].includes("w") && (notePos == 0 || !out)) {
+          currentNotes[notePos] = sylChage + scale + "/" + beat;
+          out = true;
+        } else {
+          const line = currentNotes[notePos].trim().split(",");
+
+          let sum = 0;
+          for (let i = 0; i < line.length; i++) {
+            const ary = line[i].split("/");
+            sum += 1 / parseInt(ary[1]);
+          }
+          if (sum + 1 / parseInt(beat) <= 1) {
+            checked ? line.push("b4/" + beat + "/r") : line.push(sylChage + scale + "/" + beat);
+            out = true;
+          } else if (sum != 1 && sum + 1 / parseInt(beat) > 1) return alert("사용 불가능한 박자입니다. 다른것을 선택해주세요."); // roop out and need beat change
+
+          currentNotes[notePos] = line.join(", ");
+        }
+        if (out) break;
+      }
+    }
+    const ary = fillRestNote(currentNotes);
+    const countCheck = ary.filter((el) => el === "d5/w/r").length;
+    if (countCheck != 4) {
+      const divStave = document.getElementById("output" + index);
+      if (divStave.innerHTML) divStave.innerHTML = "";
+      const vf = new Factory({renderer: {elementId: "output" + index, width: 750, height: 150}});
+      let score = vf.EasyScore();
+      score.set({time: "4/4"});
+
+      let currX = 0;
+      let system = vf.System({x: currX, y: 0, width: staveWidth + clefAndTimeWidth, spaceBetweenStaves: 10});
+      ary.forEach((note, i) => {
+        if (!i) {
+          system
+            .addStave({
+              voices: [score.voice(score.notes(note))],
+            })
+            .addClef("treble")
+            .addTimeSignature("4/4");
+
+          currX += staveWidth + clefAndTimeWidth;
+        } else {
+          system = vf.System({x: currX, y: 0, width: staveWidth, spaceBetweenStaves: 10});
+          system.addStave({
+            voices: [score.voice(score.notes(note))],
+          });
+          currX += staveWidth;
+        }
+      });
+
+      vf.draw();
+    }
+  }, [scale]);
 
   const divStaveClicked = (evt) => {
-    // let currentNotes = data[index];
-
-    //- we put a note in current bar
-    let out = false;
-    for (let notePos = 0; notePos < currentNotes.length; notePos++) {
-      if (currentNotes[notePos].includes("w") && (notePos == 0 || !out)) {
-        currentNotes[notePos] = sylChage + scale + "/" + beat;
-        out = true;
-      } else {
-        const line = currentNotes[notePos].trim().split(",");
-
-        let sum = 0;
-        for (let i = 0; i < line.length; i++) {
-          const ary = line[i].split("/");
-          sum += 1 / parseInt(ary[1]);
-        }
-        if (sum + 1 / parseInt(beat) <= 1) {
-          checked ? line.push("b4/" + beat + "/r") : line.push(sylChage + scale + "/" + beat);
-          out = true;
-        } else if (sum != 1 && sum + 1 / parseInt(beat) > 1) return alert("사용 불가능한 박자입니다. 다른것을 선택해주세요."); // roop out and need beat change
-
-        currentNotes[notePos] = line.join(", ");
-      }
-      if (out) break;
-    }
-
     data[index] = currentNotes;
-    currentNotes = fillRestNote(currentNotes);
 
-    const clefAndTimeWidth = 60;
-    const staveWidth = (700 - clefAndTimeWidth) / 4;
-    //- recover and draw all bars and its notes
-
-    const divStave = document.getElementById("output" + index);
-    divStave.innerHTML = "";
-    const vf = new Factory({renderer: {elementId: "output" + index, width: 750, height: 150}});
-    let score = vf.EasyScore();
-    score.set({time: "4/4"});
-
-    let currX = 0;
-    let system = vf.System({x: currX, y: 0, width: staveWidth + clefAndTimeWidth, spaceBetweenStaves: 10});
-    currentNotes.forEach((note, i) => {
-      if (!i) {
-        system
-          .addStave({
-            voices: [score.voice(score.notes(note))],
-          })
-          .addClef("treble")
-          .addTimeSignature("4/4");
-
-        currX += staveWidth + clefAndTimeWidth;
-      } else {
-        system = vf.System({x: currX, y: 0, width: staveWidth, spaceBetweenStaves: 10});
-        system.addStave({
-          voices: [score.voice(score.notes(note))],
-        });
-        currX += staveWidth;
-      }
-    });
-
-    vf.draw();
     setSylChange("c");
     setBeat("");
     setChecked(false);
