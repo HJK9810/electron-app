@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {Formatter, Renderer, Stave, StaveNote, Voice, Barline, RenderContext} from "vexflow";
+import {Factory, Formatter, Renderer, Stave, StaveNote, Voice} from "vexflow";
 import {data, bars, notesOfBars} from "./data";
 import fillRestNote from "./FillRest";
 import {calculateWidthAndX, calculateHeightAndY} from "./draw";
@@ -39,7 +39,6 @@ function InputBtn({index = 0}) {
     // context.clear();
     // context.rect(10, 40, 750, 150, {stroke: "none", fill: "white"});
     let currentNotes = index in data ? data[index] : [];
-    console.log(data[index]);
     //- we put a note in current bar
     let pos;
     let out = false;
@@ -56,17 +55,10 @@ function InputBtn({index = 0}) {
 
     const posArr = pos.split(",");
     currentNotes[parseInt(posArr[0])][parseInt(posArr[1])] = new StaveNote({
-      clef: "treble",
       keys: [sylChage + "/" + scale],
       duration: beat,
     });
-    // if (posAry[1] == "0") {
-    //   currentNotes.push(forInput);
-    // } else {
-    //   currentNotes[parseInt(posAry[0])][parseInt(posAry[1])] = forInput;
-    // }
-    console.log(currentNotes);
-    data[index] = currentNotes;
+    data[index] = fillRestNote(currentNotes);
     console.log(data[index]);
 
     const clefAndTimeWidth = 60;
@@ -82,7 +74,15 @@ function InputBtn({index = 0}) {
         }
         currX += stave.getWidth();
         stave.setContext(context).draw();
-        Formatter.FormatAndDraw(context, stave, notes);
+
+        const voice = new Voice({num_beats: 4, beat_value: 4});
+        voice.addTickables(notes);
+
+        // Format and justify the notes to 400 pixels.
+        new Formatter().joinVoices([voice]).format([voice], 350);
+
+        // Render voice
+        voice.draw(context, stave);
       });
     }
   };
