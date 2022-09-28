@@ -30,11 +30,13 @@ function InputBtn({index = 0}) {
   const divStaveClicked = (evt) => {
     console.log(index);
     const divStave = document.getElementById("output" + index);
+    divStave.innerHTML = "";
     const renderer = new Renderer(divStave, Renderer.Backends.SVG);
     const context = renderer.getContext();
+    context.setFont("Arial", 10);
     //- clear context: this removes previous notes and staves
     // context.clear();
-    context.rect(10, 40, 750, 150, {stroke: "none", fill: "white"});
+    // context.rect(10, 40, 750, 150, {stroke: "none", fill: "white"});
     let currentNotes = notesOfBars[0];
 
     //- we put a note in current bar
@@ -58,7 +60,7 @@ function InputBtn({index = 0}) {
       let widthAndX = calculateWidthAndX(bars[barPos], bars);
       let heightAndY = calculateHeightAndY(bars[barPos], bars);
 
-      let bar = new Stave(barPos == 0 ? 10 : widthAndX, barPos == 0 ? 40 : heightAndY, Math.floor(barPos % 4) == 0 ? 400 : 350).setContext(context);
+      let bar = new Stave(barPos == 0 ? 10 : widthAndX, barPos == 0 ? 40 : heightAndY, Math.floor(barPos % 4) == 0 ? 750 : 690).setContext(context);
       if (barPos == 0) bar.addTimeSignature("4/4");
       if (Math.floor(barPos % 4) == 0) bar.addClef("treble");
 
