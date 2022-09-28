@@ -17,9 +17,10 @@ function fillNote(left) {
 const fillRestNote = (notes) => {
   notes.forEach((note) => {
     let sum = 0;
-    for (let i = 0; i < note.length; i++) {
-      if (note[i].customTypes[0] !== "r") {
-        const beat = note[i].duration == "w" ? 1 : parseInt(note[i].duration);
+    const line = note.split(" ");
+    for (let i = 0; i < line.length; i++) {
+      if (!line[i].includes("r")) {
+        const beat = line[i].split("/")[1] == "w" ? 1 : parseInt(line[i].split("/")[1]);
         sum += 1 / beat;
       }
     }
@@ -28,12 +29,7 @@ const fillRestNote = (notes) => {
       rest.map((el, idx) => {
         for (let i = 0; i < el; i++) {
           if (idx == 4) continue;
-          note.push(
-            new StaveNote({
-              keys: ["b/4"],
-              duration: beats[idx],
-            })
-          );
+          note += " b4/" + beats[i];
         }
       });
     }

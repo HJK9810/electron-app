@@ -36,44 +36,10 @@ export default function Draw({staves = [], index, clef = "treble", timeSignature
       currX += stave.getWidth();
       stave.setContext(context).draw();
       const note = [new StaveNote({keys: ["d/5"], duration: "wr"})];
-      data[index].push([...note]);
+      data[index].push(["d5/w/r"]);
       Formatter.FormatAndDraw(context, stave, note);
     }
-
-    //Create a first bar full of silences
-    // createNewBarFullOfSilences(0);
   }
-
-  function createNewBarFullOfSilences(barPos) {
-    let widthAndX = calculateWidthAndX(bars[barPos], bars);
-    let heightAndY = calculateHeightAndY(bars[barPos], bars);
-    //
-    // rendererWidth = calculateRendererWidth(); //TODO
-    // rendererHeight = calculateRendererHeight();
-    let newBar = createBar(barPos, widthAndX, heightAndY).draw();
-    bars[barPos] = newBar;
-
-    notesOfBars[barPos] = [
-      new StaveNote({clef: "treble", keys: ["b/4"], duration: "qr"}),
-      new StaveNote({clef: "treble", keys: ["b/4"], duration: "qr"}),
-      new StaveNote({clef: "treble", keys: ["b/4"], duration: "qr"}),
-      new StaveNote({clef: "treble", keys: ["b/4"], duration: "qr"}),
-    ];
-
-    let voice = new Voice({num_beats: 4, beat_value: 4});
-    voice.addTickables(notesOfBars[barPos]);
-    new Formatter().joinVoices([voice]).format([voice], 350);
-    voice.draw(context, bars[barPos]);
-  }
-
-  const createBar = (barPos, widthAndX, heightAndY) => {
-    let widthAndXPosition = Math.floor(barPos % 4);
-
-    let bar = new Stave(barPos == 0 ? 10 : widthAndX, barPos == 0 ? 40 : heightAndY, widthAndXPosition == 0 ? 400 : 350).setContext(context);
-    if (barPos == 0) bar.addTimeSignature("4/4");
-    if (widthAndXPosition == 0) bar.addClef("treble");
-    return bar;
-  };
 
   useEffect(() => {
     initialLoad();

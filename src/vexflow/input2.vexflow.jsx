@@ -31,21 +31,20 @@ function InputBtn({index = 0}) {
   const divStaveClicked = (evt) => {
     const divStave = document.getElementById("output" + index);
     divStave.innerHTML = "";
-    const renderer = new Renderer(divStave, Renderer.Backends.SVG);
-    renderer.resize(750, 150);
-    const context = renderer.getContext();
-    context.setFont("Arial", 10);
-    //- clear context: this removes previous notes and staves
-    // context.clear();
-    // context.rect(10, 40, 750, 150, {stroke: "none", fill: "white"});
-    let currentNotes = index in data ? data[index] : [];
+    const vf = new Factory({renderer: {elementId: "output" + index, width: 750, height: 150}});
+    let score = vf.EasyScore();
+    score.set({time: "4/4"});
+
+    let currentNotes = data[index];
+    console.log(currentNotes);
     //- we put a note in current bar
-    let pos;
     let out = false;
     for (let notePos = 0; notePos < currentNotes.length; notePos++) {
-      for (let i = 0; i < currentNotes[notePos].length; i++) {
-        if (currentNotes[notePos][i].customTypes[0] === "r") {
-          pos = notePos + "," + i;
+      const line = currentNotes[notePos].split(" ");
+      for (let i = 0; i < line.length; i++) {
+        if (line[i].includes("r")) {
+          line[i] = sylChage + scale + "/" + beat;
+          currentNotes[notePos] = line.join(" ");
           out = true;
           break;
         }
@@ -53,38 +52,35 @@ function InputBtn({index = 0}) {
       if (out) break;
     }
 
-    const posArr = pos.split(",");
-    currentNotes[parseInt(posArr[0])][parseInt(posArr[1])] = new StaveNote({
-      keys: [sylChage + "/" + scale],
-      duration: beat,
-    });
     data[index] = fillRestNote(currentNotes);
     console.log(data[index]);
 
     const clefAndTimeWidth = 60;
     const staveWidth = (700 - clefAndTimeWidth) / 4;
     //- recover and draw all bars and its notes
-    for (let barPos = 0; barPos < 4; barPos++) {
-      let currX = 0;
-      currentNotes[barPos].forEach((notes, i) => {
-        const stave = new Stave(currX, 0, staveWidth);
-        if (!i) {
-          stave.setWidth(staveWidth + clefAndTimeWidth);
-          stave.addClef("treble").addTimeSignature("4/4");
-        }
-        currX += stave.getWidth();
-        stave.setContext(context).draw();
 
-        const voice = new Voice({num_beats: 4, beat_value: 4});
-        voice.addTickables(notes);
+    let currX = 0;
+    let system = vf.System({x: currX, y: 0, width: staveWidth + clefAndTimeWidth, spaceBetweenStaves: 10});
+    currentNotes.forEach((notes, i) => {
+      if (!i) {
+        system
+          .addStave({
+            voices: [score.voice(score.notes(notes))],
+          })
+          .addClef("treble")
+          .addTimeSignature("4/4");
 
-        // Format and justify the notes to 400 pixels.
-        new Formatter().joinVoices([voice]).format([voice], 350);
+        currX += staveWidth + clefAndTimeWidth;
+      } else {
+        system = vf.System({x: currX, y: 0, width: staveWidth, spaceBetweenStaves: 10});
+        system.addStave({
+          voices: [score.voice(score.notes(notes))],
+        });
+        currX += staveWidth;
+      }
+    });
 
-        // Render voice
-        voice.draw(context, stave);
-      });
-    }
+    vf.draw();
   };
 
   return (
