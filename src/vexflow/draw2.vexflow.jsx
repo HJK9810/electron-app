@@ -5,7 +5,7 @@ import data from "./data";
 const clefWidth = 30;
 const timeWidth = 30;
 
-export default function Draw({staves = [], index, clef = "treble", timeSignature = "4/4", width = 750, height = 150}) {
+export default function Draw({index, clef = "treble", timeSignature = "4/4", width = 750, height = 150}) {
   const container = useRef();
   const rendererRef = useRef();
   let renderer;
@@ -24,7 +24,7 @@ export default function Draw({staves = [], index, clef = "treble", timeSignature
 
     let currX = 0;
     data[index] = [];
-    for (let i = 0; i < 4 - staves.length; i++) {
+    for (let i = 0; i < 4; i++) {
       const stave = new Stave(currX, 0, staveWidth);
       if (!i) {
         stave.setWidth(staveWidth + clefAndTimeWidth);
@@ -41,7 +41,7 @@ export default function Draw({staves = [], index, clef = "treble", timeSignature
 
   useEffect(() => {
     initialLoad();
-  }, [staves]);
+  }, []);
 
   return <div id={"output" + index} ref={container} />;
 }
