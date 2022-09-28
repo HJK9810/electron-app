@@ -1,5 +1,3 @@
-import {StaveNote} from "vexflow";
-
 const beats = [16, 8, 4, 2, 1];
 
 function fillNote(left) {
@@ -15,7 +13,8 @@ function fillNote(left) {
 }
 
 const fillRestNote = (notes) => {
-  notes.forEach((note) => {
+  const result = [];
+  notes.map((note) => {
     let sum = 0;
     const line = note.split(" ");
     for (let i = 0; i < line.length; i++) {
@@ -26,16 +25,17 @@ const fillRestNote = (notes) => {
     }
     if (sum != 1) {
       const rest = fillNote(1 - sum);
+      console.log(rest);
       rest.map((el, idx) => {
         for (let i = 0; i < el; i++) {
           if (idx == 4) continue;
-          note += " b4/" + beats[i];
+          note += ", b4/" + beats[idx] + "/r";
         }
       });
     }
   });
 
-  return notes;
+  return result;
 };
 
 export default fillRestNote;
