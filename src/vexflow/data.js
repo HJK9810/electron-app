@@ -8,7 +8,6 @@
  * [notes] -> "계이름 + 높낮이" or ["계이름 + 높낮이", 박자]
  *  박자가 존재 X ? 4분음표 : 그 외(16, 8, 2, 온음표)
  */
-export let data = {};
+let data = {};
 
-export let bars = [];
-export let notesOfBars = []; //In each position it has an array of 4 notes
+export default data;

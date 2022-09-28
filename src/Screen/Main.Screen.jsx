@@ -2,7 +2,7 @@ import {Container} from "react-bootstrap";
 import {useState} from "react";
 import Draw from "../vexflow/draw2.vexflow";
 import InputBtn from "../vexflow/input2.vexflow";
-import {data} from "../vexflow/data";
+import data from "../vexflow/data";
 
 function Main() {
   const [draw, setDraw] = useState([]);

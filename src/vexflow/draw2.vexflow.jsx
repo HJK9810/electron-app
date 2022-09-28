@@ -1,8 +1,6 @@
 import React, {useRef, useEffect} from "react";
-import {Formatter, Renderer, Stave, StaveNote, Voice, Accidental, Barline} from "vexflow";
-import fillRestNote from "./FillRest";
-import {data, bars, notesOfBars} from "./data";
-import {calculateWidthAndX, calculateHeightAndY} from "./draw";
+import {Formatter, Renderer, Stave, StaveNote} from "vexflow";
+import data from "./data";
 
 const clefWidth = 30;
 const timeWidth = 30;

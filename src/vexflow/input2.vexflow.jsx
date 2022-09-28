@@ -1,8 +1,7 @@
 import React, {useState, useEffect} from "react";
-import {Factory, Formatter, isRenderContext, Renderer, Stave, StaveNote, Voice} from "vexflow";
-import {data, bars, notesOfBars} from "./data";
+import {Factory} from "vexflow";
+import data from "./data";
 import fillRestNote from "./FillRest";
-import {calculateWidthAndX, calculateHeightAndY} from "./draw";
 
 const syllable = {
   c: [3, 6],
