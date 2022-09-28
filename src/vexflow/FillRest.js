@@ -16,7 +16,7 @@ const fillRestNote = (notes) => {
   const result = [];
   notes.map((note) => {
     let sum = 0;
-    const line = note.split(" ");
+    const line = note.trim().split(",");
     for (let i = 0; i < line.length; i++) {
       if (!line[i].includes("r")) {
         const beat = line[i].split("/")[1] == "w" ? 1 : parseInt(line[i].split("/")[1]);
@@ -25,7 +25,6 @@ const fillRestNote = (notes) => {
     }
     if (sum != 1) {
       const rest = fillNote(1 - sum);
-      console.log(rest);
       rest.map((el, idx) => {
         for (let i = 0; i < el; i++) {
           if (idx == 4) continue;
@@ -33,6 +32,7 @@ const fillRestNote = (notes) => {
         }
       });
     }
+    result.push(note);
   });
 
   return result;

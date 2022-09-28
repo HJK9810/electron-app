@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {Factory, Formatter, Renderer, Stave, StaveNote, Voice} from "vexflow";
+import {Factory, Formatter, isRenderContext, Renderer, Stave, StaveNote, Voice} from "vexflow";
 import {data, bars, notesOfBars} from "./data";
 import fillRestNote from "./FillRest";
 import {calculateWidthAndX, calculateHeightAndY} from "./draw";
@@ -29,43 +29,52 @@ function InputBtn({index = 0}) {
   }, [index]);
 
   const divStaveClicked = (evt) => {
+    let currentNotes = data[index];
+
+    //- we put a note in current bar
+    let out = false;
+    for (let notePos = 0; notePos < currentNotes.length; notePos++) {
+      if (currentNotes[notePos].includes("w") && (notePos == 0 || !out)) {
+        currentNotes[notePos] = sylChage + scale + "/" + beat;
+        out = true;
+      } else {
+        const line = currentNotes[notePos].trim().split(",");
+
+        let sum = 0;
+        for (let i = 0; i < line.length; i++) {
+          const ary = line[i].split("/");
+          sum += 1 / parseInt(ary[1]);
+        }
+        if (sum + 1 / parseInt(beat) <= 1) {
+          checked ? line.push(sylChage + scale + "/" + beat + "/r") : line.push(sylChage + scale + "/" + beat);
+          out = true;
+        } else if (sum + 1 / parseInt(beat) > 1) return alert("사용 불가능한 박자입니다. 다른것을 선택해주세요."); // roop out and need beat change
+
+        currentNotes[notePos] = line.join(", ");
+      }
+      if (out) break;
+    }
+
+    data[index] = currentNotes;
+    currentNotes = fillRestNote(currentNotes);
+
+    const clefAndTimeWidth = 60;
+    const staveWidth = (700 - clefAndTimeWidth) / 4;
+    //- recover and draw all bars and its notes
+
     const divStave = document.getElementById("output" + index);
     divStave.innerHTML = "";
     const vf = new Factory({renderer: {elementId: "output" + index, width: 750, height: 150}});
     let score = vf.EasyScore();
     score.set({time: "4/4"});
 
-    let currentNotes = data[index];
-    console.log(currentNotes);
-    //- we put a note in current bar
-    let out = false;
-    for (let notePos = 0; notePos < currentNotes.length; notePos++) {
-      const line = currentNotes[notePos].split(" ");
-      for (let i = 0; i < line.length; i++) {
-        if (line[i].includes("r")) {
-          line[i] = sylChage + scale + "/" + beat;
-          currentNotes[notePos] = line.join(" ");
-          out = true;
-          break;
-        }
-      }
-      if (out) break;
-    }
-
-    data[index] = fillRestNote(currentNotes);
-    console.log(data[index]);
-
-    const clefAndTimeWidth = 60;
-    const staveWidth = (700 - clefAndTimeWidth) / 4;
-    //- recover and draw all bars and its notes
-
     let currX = 0;
     let system = vf.System({x: currX, y: 0, width: staveWidth + clefAndTimeWidth, spaceBetweenStaves: 10});
-    currentNotes.forEach((notes, i) => {
+    currentNotes.forEach((note, i) => {
       if (!i) {
         system
           .addStave({
-            voices: [score.voice(score.notes(notes))],
+            voices: [score.voice(score.notes(note))],
           })
           .addClef("treble")
           .addTimeSignature("4/4");
@@ -74,7 +83,7 @@ function InputBtn({index = 0}) {
       } else {
         system = vf.System({x: currX, y: 0, width: staveWidth, spaceBetweenStaves: 10});
         system.addStave({
-          voices: [score.voice(score.notes(notes))],
+          voices: [score.voice(score.notes(note))],
         });
         currX += staveWidth;
       }

@@ -36,7 +36,7 @@ export default function Draw({staves = [], index, clef = "treble", timeSignature
       currX += stave.getWidth();
       stave.setContext(context).draw();
       const note = [new StaveNote({keys: ["d/5"], duration: "wr"})];
-      data[index].push(["d5/w/r"]);
+      data[index].push("d5/w/r");
       Formatter.FormatAndDraw(context, stave, note);
     }
   }
