@@ -2,18 +2,29 @@ import {Container} from "react-bootstrap";
 import {useState} from "react";
 import Draw from "../vexflow/draw2.vexflow";
 import InputBtn from "../vexflow/input2.vexflow";
-import data from "../vexflow/data";
 
 function Main() {
   const [draw, setDraw] = useState([]);
   const [show, setShow] = useState("none");
   const [drawKey, setDrawKey] = useState(0);
+  const [clickID, setClickID] = useState(drawKey + 1);
 
   const addDraw = () => {
     setDrawKey(drawKey + 1);
+    setClickID(drawKey + 1);
     setDraw(draw.concat(<Draw key={drawKey} index={drawKey + 1} />));
-    data[drawKey + 1] = [[]];
   };
+
+  window.addEventListener("click", (e) => {
+    if (Array.isArray(e.path)) {
+      e.path.forEach((el) => {
+        if (el.id && el.id.includes("output")) {
+          parseInt(el.id.replace("ouput", "")) ? setClickID(parseInt(el.id.replace("ouput", ""))) : setClickID(clickID);
+        }
+      });
+    }
+    console.log(clickID);
+  });
 
   return (
     <Container>
