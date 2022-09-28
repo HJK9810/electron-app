@@ -17,18 +17,15 @@ const korSyllable = ["도", "레", "미", "파", "솔", "라", "시"];
 
 function InputBtn({index = 0}) {
   const [sylChage, setSylChange] = useState("c");
-  const [beat, setBeat] = useState(4);
+  const [beat, setBeat] = useState("");
   const [scale, setScale] = useState();
   const [checked, setChecked] = useState(false);
 
-  useEffect(() => {
-    setScale(scale);
-    setBeat(beat);
-    setSylChange(sylChage);
-  }, [index]);
+  let currentNotes = data[index];
+  useEffect(() => setScale(), [currentNotes]);
 
   const divStaveClicked = (evt) => {
-    let currentNotes = data[index];
+    // let currentNotes = data[index];
 
     //- we put a note in current bar
     let out = false;
@@ -89,6 +86,9 @@ function InputBtn({index = 0}) {
     });
 
     vf.draw();
+    setSylChange("c");
+    setBeat("");
+    setChecked(false);
   };
 
   return (
