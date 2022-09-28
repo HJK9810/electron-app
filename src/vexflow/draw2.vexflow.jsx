@@ -24,8 +24,24 @@ export default function Draw({staves = [], index, clef = "treble", timeSignature
     const clefAndTimeWidth = (clef ? clefWidth : 0) + (timeSignature ? timeWidth : 0);
     const staveWidth = (width - 50 - clefAndTimeWidth) / 4;
 
+    let currX = 0;
+    data[index] = [];
+    for (let i = 0; i < 4 - staves.length; i++) {
+      const stave = new Stave(currX, 0, staveWidth);
+      if (!i) {
+        stave.setWidth(staveWidth + clefAndTimeWidth);
+        clef && stave.addClef(clef);
+        timeSignature && stave.addTimeSignature(timeSignature);
+      }
+      currX += stave.getWidth();
+      stave.setContext(context).draw();
+      const note = [new StaveNote({keys: ["d/5"], duration: "wr"})];
+      data[index].push([...note]);
+      Formatter.FormatAndDraw(context, stave, note);
+    }
+
     //Create a first bar full of silences
-    createNewBarFullOfSilences(0);
+    // createNewBarFullOfSilences(0);
   }
 
   function createNewBarFullOfSilences(barPos) {
