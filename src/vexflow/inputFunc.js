@@ -1,24 +1,22 @@
 import data from "./data";
 import fillRestNote from "./FillRest";
 
-// for note update
-export const forUpdate = (sepearID, sylChage, beat, scale, checked) => {
-  let currentNotes = [...data[parseInt(sepearID[0].replace("output", ""))]];
+const findPosition = (ary) => {
   let count = 0;
-  let out = false;
-  let position = [];
-  const ary = fillRestNote(currentNotes);
   for (let i = 0; i < ary.length; i++) {
     const line = ary[i].trim().split(",");
     for (let j = 0; j < line.length; j++) {
       if (parseInt(sepearID[1]) == count) {
-        position = [i, j];
-        out = true;
-        break;
+        return [i, j];
       } else count++;
     }
-    if (out) break;
   }
+};
+
+// for note update
+export const forUpdate = (sepearID, sylChage, beat, scale, checked) => {
+  let currentNotes = [...data[parseInt(sepearID[0].replace("output", ""))]];
+  const position = findPosition(fillRestNote(currentNotes));
   const line = currentNotes[position[0]].trim().split(",");
 
   let sum = 0;
@@ -32,6 +30,16 @@ export const forUpdate = (sepearID, sylChage, beat, scale, checked) => {
   } else if (sum != 1 && sum + 1 / parseInt(beat) > 1) return ""; // roop out and need beat change
 
   currentNotes[position[0]] = line.join(", ");
+  return currentNotes;
+};
+
+export const forDataDel = (sepearID) => {
+  let currentNotes = [...data[parseInt(sepearID[0].replace("output", ""))]];
+  const position = findPosition(fillRestNote(currentNotes));
+  const line = currentNotes[position[0]].trim().split(",");
+  line = line.splice(position[1], 1);
+  currentNotes[position[0]] = line.join(", ");
+
   return currentNotes;
 };
 

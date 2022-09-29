@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 import data from "./data";
 import fillRestNote from "./FillRest";
 import drawMusicSheet from "./draw";
-import {forUpdate, forDataIn} from "./inputFunc";
+import {forUpdate, forDataIn, forDataDel} from "./inputFunc";
 
 const syllable = {
   c: [3, 6],
@@ -26,13 +26,13 @@ function InputBtn({index = 0}) {
 
   let currentNotes = index in data ? [...data[index]] : ["d5/w/r", "d5/w/r", "d5/w/r", "d5/w/r"];
   let staveID = "output" + index;
+  let idx = index;
   useEffect(() => {
     if (scale && beat) {
-      currentNotes = [...data[index]];
+      currentNotes = [...data[idx]];
       if (changeID) {
         const sepearID = changeID.split("/");
         staveID = sepearID[0];
-        console.log();
         const ary = forUpdate(sepearID, sylChage, beat, scale, checked);
 
         if (Array.isArray(ary)) currentNotes = ary;
@@ -62,11 +62,33 @@ function InputBtn({index = 0}) {
   }, [baseStr]);
 
   const divStaveClicked = (evt) => {
-    data[index] = currentNotes;
+    data[idx] = currentNotes;
 
     setSylChange("c");
     setBeat("");
     setChecked(false);
+    setChangeID("");
+    idx = index;
+  };
+
+  const deletNote = (e) => {
+    const sepearID = changeID.split("/");
+    const staveID = sepearID[0];
+    if (confirm(`정말로 해당 음표를 삭제하시겠습니까?\n삭제 음표 : ${staveID.replace("output", "")}번째 악보 ${parseInt(sepearID[1]) + 1}번째 음표`)) {
+      data[parseInt(staveID.replace("output", ""))] = forDataDel(sepearID);
+      const ary = fillRestNote([...data[parseInt(staveID.replace("output", ""))]]);
+      drawMusicSheet(ary, staveID);
+      const divStave = document.getElementById(staveID);
+
+      const svg = divStave.getElementsByTagName("svg")[0];
+      const tags = svg.querySelectorAll(".vf-stavenote");
+      for (let j = 0; j < tags.length; j++) {
+        tags[j].addEventListener("click", function (e) {
+          const id = divStave.id + "/" + j;
+          setChangeID(id);
+        });
+      }
+    }
     setChangeID("");
   };
 
@@ -121,6 +143,9 @@ function InputBtn({index = 0}) {
         </fieldset>
         <button type="button" className="m-1 btn btn-outline-info" onClick={divStaveClicked} disabled={!sylChage || !beat || !scale ? true : false}>
           선택완료
+        </button>
+        <button type="button" className="m-1 btn btn-outline-danger" onClick={deletNote} disabled={!changeID ? true : false}>
+          음표 삭제
         </button>
       </form>
     </>
