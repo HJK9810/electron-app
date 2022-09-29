@@ -9,21 +9,21 @@ function Main() {
   const [show, setShow] = useState("none");
   const [drawKey, setDrawKey] = useState(0);
 
-  useEffect(() => {
-    for (let i = 1; i <= drawKey; i++) {
-      const getid = document.getElementById("output" + i);
-      const tags = getid.querySelectorAll("svg.vf-stavenote");
-      for (let j = 0; j < tags.length; j++) {
-        console.log(tags[j]);
-        tags[j].addEventListener("mouseover", function (e) {
-          tags[j].style.cssText = "1px solid red";
-        });
-        tags[j].addEventListener("mousedown", function (e) {
-          tags[j].style.cssText = "";
-        });
-      }
-    }
-  }, [data[drawKey]]);
+  // useEffect(() => {
+  //   for (let i = 1; i <= drawKey; i++) {
+  //     const getid = document.getElementById("output" + i);
+  //     const tags = getid.querySelectorAll("svg.vf-stavenote");
+  //     for (let j = 0; j < tags.length; j++) {
+  //       console.log(tags[j]);
+  //       tags[j].addEventListener("mouseover", function (e) {
+  //         tags[j].style.cssText = "1px solid red";
+  //       });
+  //       tags[j].addEventListener("mousedown", function (e) {
+  //         tags[j].style.cssText = "";
+  //       });
+  //     }
+  //   }
+  // }, [data[drawKey]]);
 
   const addDraw = () => {
     setDrawKey(drawKey + 1);

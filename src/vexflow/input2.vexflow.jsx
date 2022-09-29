@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react";
 import {Factory} from "vexflow";
 import data from "./data";
 import fillRestNote from "./FillRest";
+import drawMusicSheet from "./draw";
 
 const syllable = {
   c: [3, 6],
@@ -14,8 +15,8 @@ const syllable = {
 };
 const beats = [16, 8, 4, 2, 1];
 const korSyllable = ["도", "레", "미", "파", "솔", "라", "시"];
-const clefAndTimeWidth = 60;
-const staveWidth = (700 - clefAndTimeWidth) / 4;
+// const clefAndTimeWidth = 60;
+// const staveWidth = (700 - clefAndTimeWidth) / 4;
 
 function InputBtn({index = 0}) {
   const [sylChage, setSylChange] = useState("c");
@@ -54,34 +55,18 @@ function InputBtn({index = 0}) {
     const ary = fillRestNote(currentNotes);
     const countCheck = ary.filter((el) => el === "d5/w/r").length;
     if (countCheck != 4) {
+      drawMusicSheet(ary, "output" + index);
       const divStave = document.getElementById("output" + index);
-      if (divStave.innerHTML) divStave.innerHTML = "";
-      const vf = new Factory({renderer: {elementId: "output" + index, width: 750, height: 150}});
-      let score = vf.EasyScore();
-      score.set({time: "4/4"});
 
-      let currX = 0;
-      let system = vf.System({x: currX, y: 0, width: staveWidth + clefAndTimeWidth, spaceBetweenStaves: 10});
-      ary.forEach((note, i) => {
-        if (!i) {
-          system
-            .addStave({
-              voices: [score.voice(score.notes(note))],
-            })
-            .addClef("treble")
-            .addTimeSignature("4/4");
-
-          currX += staveWidth + clefAndTimeWidth;
-        } else {
-          system = vf.System({x: currX, y: 0, width: staveWidth, spaceBetweenStaves: 10});
-          system.addStave({
-            voices: [score.voice(score.notes(note))],
-          });
-          currX += staveWidth;
-        }
-      });
-
-      vf.draw();
+      const svg = divStave.getElementsByTagName("svg")[0];
+      const tags = svg.querySelectorAll(".vf-stavenote");
+      for (let j = 0; j < tags.length; j++) {
+        tags[j].addEventListener("click", function (e) {
+          const id = divStave.id + "/" + j;
+          console.log(id + "click");
+          // tags[j].classList.add("border", "border-danger");
+        });
+      }
     }
   }, [baseStr]);
 
