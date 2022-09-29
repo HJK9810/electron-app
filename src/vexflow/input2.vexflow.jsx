@@ -22,6 +22,7 @@ function InputBtn({index = 0}) {
   const [beat, setBeat] = useState("");
   const [scale, setScale] = useState();
   const [checked, setChecked] = useState(false);
+  const [baseStr, setBaseStr] = useState("");
 
   let currentNotes = index in data ? [...data[index]] : ["d5/w/r", "d5/w/r", "d5/w/r", "d5/w/r"];
   useEffect(() => {
@@ -82,7 +83,7 @@ function InputBtn({index = 0}) {
 
       vf.draw();
     }
-  }, [scale]);
+  }, [baseStr]);
 
   const divStaveClicked = (evt) => {
     data[index] = currentNotes;
@@ -92,6 +93,23 @@ function InputBtn({index = 0}) {
     setChecked(false);
   };
 
+  const sylHandler = (e) => {
+    setSylChange(e.target.value);
+    setBaseStr(e.target.value + scale + "/" + beat);
+  };
+  const beatHandler = (e) => {
+    setBeat(e.target.value);
+    setBaseStr(e.target.value + scale + "/" + beat);
+  };
+  const scaleHandler = (e) => {
+    setScale(e.target.value);
+    setBaseStr(e.target.value + scale + "/" + beat);
+  };
+  const checkedHandler = (e) => {
+    setChecked(e.target.checked);
+    e.target.checked ? setBaseStr("b4/" + beat + "/r") : setBaseStr(sylChage + scale + "/" + beat);
+  };
+
   return (
     <>
       <form className="m-1">
@@ -99,7 +117,7 @@ function InputBtn({index = 0}) {
           계이름 :
           {Object.keys(syllable).map((value, i) => (
             <label key={i} className="p-2 form-check-label">
-              <input type="radio" className="form-check-input" name="syllable" value={value} onChange={(e) => setSylChange(e.target.value)} checked={value == sylChage ? true : false} />
+              <input type="radio" className="form-check-input" name="syllable" value={value} onChange={sylHandler} checked={value == sylChage ? true : false} />
               {korSyllable[i]}
             </label>
           ))}
@@ -108,13 +126,13 @@ function InputBtn({index = 0}) {
           박자 :
           {beats.map((value, i) => (
             <label key={i} className="p-2 form-check-label">
-              <input type="radio" className="form-check-input" name="beats" value={value} onChange={(e) => setBeat(e.target.value)} checked={value == beat ? true : false} />
+              <input type="radio" className="form-check-input" name="beats" value={value} onChange={beatHandler} checked={value == beat ? true : false} />
               {value}
             </label>
           ))}
         </span>
         <label className="m-1 form-check-label">
-          <input type="checkbox" className="form-check-input" name="rest" value="rest" onChange={(e) => setChecked(e.target.checked)} checked={checked ? true : false} />
+          <input type="checkbox" className="form-check-input" name="rest" value="rest" onChange={checkedHandler} checked={checked ? true : false} />
           쉼표
         </label>
         <br />
@@ -122,7 +140,7 @@ function InputBtn({index = 0}) {
           <label htmlFor="upDown" className="form-label">
             음계 : {scale}
           </label>
-          <input type="range" className="form-range" id="upDown" min={syllable[sylChage][0]} max={syllable[sylChage][1]} step="1" onChange={(e) => setScale(e.target.value)} />
+          <input type="range" className="form-range" id="upDown" min={syllable[sylChage][0]} max={syllable[sylChage][1]} step="1" onChange={scaleHandler} />
         </fieldset>
         <button type="button" className="m-1 btn btn-outline-info" onClick={divStaveClicked} disabled={!sylChage || !beat || !scale ? true : false}>
           선택완료
