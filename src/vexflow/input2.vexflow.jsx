@@ -33,6 +33,7 @@ function InputBtn({index = 0}) {
       if (changeID) {
         const sepearID = changeID.split("/");
         staveID = sepearID[0];
+        idx = parseInt(staveID.replace("output", ""));
         const ary = forUpdate(sepearID, sylChage, beat, scale, checked);
 
         if (Array.isArray(ary)) currentNotes = ary;
@@ -56,6 +57,7 @@ function InputBtn({index = 0}) {
         tags[j].addEventListener("click", function (e) {
           const id = divStave.id + "/" + j;
           setChangeID(id);
+          setBaseStr(baseStr + id);
         });
       }
     }
@@ -74,9 +76,10 @@ function InputBtn({index = 0}) {
   const deletNote = (e) => {
     const sepearID = changeID.split("/");
     const staveID = sepearID[0];
-    if (confirm(`정말로 해당 음표를 삭제하시겠습니까?\n삭제 음표 : ${staveID.replace("output", "")}번째 악보 ${parseInt(sepearID[1]) + 1}번째 음표`)) {
-      data[parseInt(staveID.replace("output", ""))] = forDataDel(sepearID);
-      const ary = fillRestNote([...data[parseInt(staveID.replace("output", ""))]]);
+    idx = parseInt(staveID.replace("output", ""));
+    if (confirm(`정말로 해당 음표를 삭제하시겠습니까?\n삭제 음표 : ${idx}번째 악보 ${parseInt(sepearID[1]) + 1}번째 음표`)) {
+      currentNotes = forDataDel(sepearID);
+      const ary = fillRestNote(currentNotes);
       drawMusicSheet(ary, staveID);
       const divStave = document.getElementById(staveID);
 
@@ -88,8 +91,14 @@ function InputBtn({index = 0}) {
           setChangeID(id);
         });
       }
+      data[idx] = currentNotes;
     }
+
+    setSylChange("c");
+    setBeat("");
+    setChecked(false);
     setChangeID("");
+    idx = index;
   };
 
   const sylHandler = (e) => {

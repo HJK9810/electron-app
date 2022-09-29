@@ -1,12 +1,12 @@
 import data from "./data";
 import fillRestNote from "./FillRest";
 
-const findPosition = (ary) => {
+const findPosition = (ary, num) => {
   let count = 0;
   for (let i = 0; i < ary.length; i++) {
     const line = ary[i].trim().split(",");
     for (let j = 0; j < line.length; j++) {
-      if (parseInt(sepearID[1]) == count) {
+      if (parseInt(num) == count) {
         return [i, j];
       } else count++;
     }
@@ -16,7 +16,7 @@ const findPosition = (ary) => {
 // for note update
 export const forUpdate = (sepearID, sylChage, beat, scale, checked) => {
   let currentNotes = [...data[parseInt(sepearID[0].replace("output", ""))]];
-  const position = findPosition(fillRestNote(currentNotes));
+  const position = findPosition(fillRestNote(currentNotes), sepearID[1]);
   const line = currentNotes[position[0]].trim().split(",");
 
   let sum = 0;
@@ -35,9 +35,9 @@ export const forUpdate = (sepearID, sylChage, beat, scale, checked) => {
 
 export const forDataDel = (sepearID) => {
   let currentNotes = [...data[parseInt(sepearID[0].replace("output", ""))]];
-  const position = findPosition(fillRestNote(currentNotes));
-  const line = currentNotes[position[0]].trim().split(",");
-  line = line.splice(position[1], 1);
+  const position = findPosition(fillRestNote(currentNotes), sepearID[1]);
+  let line = currentNotes[position[0]].trim().split(",");
+  line.splice(position[1], 1);
   currentNotes[position[0]] = line.join(", ");
 
   return currentNotes;
